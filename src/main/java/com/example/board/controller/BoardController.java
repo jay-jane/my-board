@@ -1,28 +1,20 @@
 package com.example.board.controller;
 
-import com.example.board.command.TestVO;
-import com.example.board.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BoardController {
 
-    @Autowired
-    private TestService testService;
-
-    @GetMapping("/")
+    @GetMapping("/board")
     public String mainPage() {
 
         return "board-main";
     }
 
-    @GetMapping("/log-in")
-    public String board() {
+    @GetMapping(value = {"/", "/log-in"})
+    public String logIn() {
 
         return "log-in";
     }
@@ -39,8 +31,13 @@ public class BoardController {
         return "my-page";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/board/write")
     public String boardWrite() {
         return "board-write";
+    }
+
+    @GetMapping("/board/view")
+    public String boardView() {
+        return "board-view";
     }
 }

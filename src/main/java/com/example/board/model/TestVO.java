@@ -1,4 +1,4 @@
-package com.example.board.command;
+package com.example.board.model;
 
 
 import lombok.Data;

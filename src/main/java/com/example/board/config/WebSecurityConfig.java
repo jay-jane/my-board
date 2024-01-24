@@ -2,6 +2,7 @@ package com.example.board.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,8 +50,22 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.httpBasic(withDefaults());
         http.authorizeRequests()
-                .anyRequest().permitAll(); //다시 해 보기
+                .anyRequest().authenticated(); //다시 해 보기
 
         return http.build();
     }
+
+//    @Bean
+//    public SecurityFilterChain filterChain2(AuthenticationManagerBuilder auth) throws Exception {
+//        var userDetailsService = new InMemoryUserDetailsManager();
+//
+//        var user = User.withUsername("jay")
+//                .password("1234")
+//                .authorities("read")
+//                .build();
+//        userDetailsService.createUser(user);
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+//
+//    }
 }
