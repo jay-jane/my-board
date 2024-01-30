@@ -1,14 +1,19 @@
-package com.example.board.model;
+package com.example.board.repository;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
-public class MemberVO {
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserVO {
     private long id;
-    private String login_id;
+    private String username;
     private String password;
     private String name;
     private String nickname;
@@ -18,4 +23,7 @@ public class MemberVO {
     private LocalDateTime join_date;
     private LocalDateTime last_login_date;
     private boolean is_deleted;
+    private String role;
+    private String provider;
+    private String provider_id;
 }

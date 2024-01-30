@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
 
 <head>
     <meta charset="utf-8">
@@ -225,7 +227,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="my-page">
+                        <a class="dropdown-item d-flex align-items-center" href="mypage">
                             <i class="bi bi-person"></i>
                             <span>내 정보</span>
                         </a>
@@ -235,7 +237,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="/logout">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>로그 아웃</span>
                         </a>
@@ -255,28 +257,28 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="my-page">
+            <a class="nav-link collapsed" href="mypage">
                 <i class="bi bi-person"></i>
                 <span>내 정보</span>
             </a>
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="sign-in">
+            <a class="nav-link collapsed" href="signin">
                 <i class="bi bi-card-list"></i>
                 <span>회원 가입</span>
             </a>
         </li><!-- End Register Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="log-in">
+            <a class="nav-link collapsed" href="login">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>로그인</span>
             </a>
         </li><!-- End Login Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="/logout">
                 <i class="bi bi-file-earmark"></i>
                 <span>로그 아웃</span>
             </a>

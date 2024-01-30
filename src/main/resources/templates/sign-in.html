@@ -64,53 +64,65 @@
                                     <h5 class="card-title text-center pb-0 fs-4">회원 가입</h5>
                                 </div>
 
-                                <form class="row g-3 needs-validation" novalidate>
-                                    <div class="col-12">
-                                        <label for="yourName" class="form-label">이름</label>
-                                        <input type="text" name="name" class="form-control" id="yourName" required>
-                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
-                                    </div>
+                                <form action="/signinForm" method="post" class="row g-3 needs-validation">
 
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">이메일</label>
-                                        <input type="email" name="email" class="form-control" id="yourEmail">
-                                        <!-- <div class="invalid-feedback">Please enter a valid Email adddress!</div> -->
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="yourUsername" class="form-label">아이디</label>
+                                        <label for="username" class="form-label">아이디</label>
                                         <div class="input-group has-validation">
-                                            <input type="text" name="username" class="form-control" id="yourUsername"
+                                            <input type="text" name="username" class="form-control" id="username"
                                                    required>
                                             <div class="invalid-feedback">아이디를 입력해주세요.</div>
+                                            <button type="button" class="btn btn-primary">중복 확인</button>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">비밀번호</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword"
+                                        <label for="password" class="form-label">비밀번호</label>
+                                        <input type="password" name="password" class="form-control" id="password"
                                                required>
                                         <div class="invalid-feedback">비밀번호를 입력해주세요</div>
                                     </div>
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">비밀번호 확인</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword"
+                                        <label for="checkPassword" class="form-label">비밀번호 확인</label>
+                                        <input type="password" name="checkPassword" class="form-control" id="checkPassword"
                                                required>
                                         <div class="invalid-feedback">비밀번호를 입력해주세요</div>
                                     </div>
 
-                                    <!-- <div class="col-12"> 약관 동의
-                                      <div class="form-check">
-                                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                                        <div class="invalid-feedback">You must agree before submitting.</div>
-                                      </div>
-                                    </div> -->
+                                    <div class="col-12">
+                                        <label for="nickname" class="form-label">닉네임</label>
+                                        <input type="text" name="nickname" class="form-control" id="nickname" required>
+                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="name" class="form-label">이름</label>
+                                        <input type="text" name="name" class="form-control" id="name" required>
+                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="birth" class="form-label">생년월일</label>
+                                        <input type="text" name="birth" class="form-control" id="birth" required>
+                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="email" class="form-label">이메일</label>
+                                        <input type="email" name="email" class="form-control" id="email">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="phone" class="form-label">연락처</label>
+                                        <input type="text" name="phone" class="form-control" id="phone" required>
+                                        <div class="invalid-feedback">연락처를 입력해 주세요</div>
+                                    </div>
+
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">완료</button>
                                     </div>
                                     <div class="col-12">
-                                        <p class="small mb-0">계정이 이미 있으신가요? <a href="log-in"><b/>로그인</a></p>
+                                        <p class="small mb-0">계정이 이미 있으신가요? <a href="login"><b/>로그인</a></p>
                                     </div>
                                 </form>
 

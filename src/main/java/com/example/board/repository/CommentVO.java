@@ -1,10 +1,13 @@
-package com.example.board.model;
+package com.example.board.repository;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class CommentVO {
     private long id;
     private String content;

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
 
 <head>
     <meta charset="utf-8">
@@ -227,7 +229,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="my-page">
+                        <a class="dropdown-item d-flex align-items-center" href="mypage">
                             <i class="bi bi-person"></i>
                             <span>내 정보</span>
                         </a>
@@ -237,7 +239,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="/logout">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>로그 아웃</span>
                         </a>
@@ -257,28 +259,28 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="my-page">
+            <a class="nav-link collapsed" href="mypage">
                 <i class="bi bi-person"></i>
                 <span>내 정보</span>
             </a>
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="sign-in">
+            <a class="nav-link collapsed" href="signin">
                 <i class="bi bi-card-list"></i>
                 <span>회원 가입</span>
             </a>
         </li><!-- End Register Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="log-in">
+            <a class="nav-link collapsed" href="login">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>로그인</span>
             </a>
         </li><!-- End Login Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="/logout">
                 <i class="bi bi-file-earmark"></i>
                 <span>로그 아웃</span>
             </a>
@@ -287,58 +289,61 @@
     </ul>
 
 </aside><!-- End Sidebar-->
+<div layout:fragment="content">
+    <main id="main" class="main">
 
-<main id="main" class="main">
+        <div class="pagetitle">
+            <h1>INFO</h1>
+        </div><!-- End Page Title -->
 
-    <div class="pagetitle">
-        <h1>INFO</h1>
-    </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
 
-    <section class="section">
-        <div class="row">
-            <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body"><br>
+                            <p>추천을 많이 받은 게시물은 상단에 노출됩니다.</p>
 
-                <div class="card">
-                    <div class="card-body"><br>
-                        <p>추천을 많이 받은 게시물은 상단에 노출됩니다.</p>
-
-                        <!-- Table with stripped rows -->
-                        <!-- <table class="table datatable"> -->
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">글 번호</th>
-                                <th scope="col">제목</th>
-                                <th scope="col">작성자</th>
-                                <th scope="col">추천수</th>
-                                <th scope="col">조회수</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td id="board-title-td" onmouseover="this.style.backgroundColor='#f3f3f3'" onmouseout="this.style.backgroundColor='transparent'">
-                                    <span id="board-title" onclick="location.href='board/view'" onmouseover="this.style.cursor='pointer'">예시</span>
-                                </td>
-                                <td>이이이</td>
-                                <td>5</td>
-                                <td>999</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
-                        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='board/write'"><b/>글
-                            쓰기
-                        </button>
+                            <!-- Table with stripped rows -->
+                            <!-- <table class="table datatable"> -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">글 번호</th>
+                                    <th scope="col">제목</th>
+                                    <th scope="col">작성자</th>
+                                    <th scope="col">추천수</th>
+                                    <th scope="col">조회수</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td id="board-title-td" onmouseover="this.style.backgroundColor='#f3f3f3'"
+                                        onmouseout="this.style.backgroundColor='transparent'">
+                                        <span id="board-title" onclick="location.href='board/view'"
+                                              onmouseover="this.style.cursor='pointer'">예시</span>
+                                    </td>
+                                    <td>이이이</td>
+                                    <td>5</td>
+                                    <td>999</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='board/write'">
+                                <b/>글
+                                쓰기
+                            </button>
+                        </div>
                     </div>
+
                 </div>
-
             </div>
-        </div>
-    </section>
+        </section>
 
-</main><!-- End #main -->
-
+    </main><!-- End #main -->
+</div>
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
