@@ -31,9 +31,10 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login") //사용자 정의 로그인 페이지
                 .loginProcessingUrl("/loginForm") //주소가 호출 되면 시큐리티가 낚아 채서 대신 로그인 진행
-                .defaultSuccessUrl("/board")
+                .defaultSuccessUrl("/board") //로그인 성공 후 이동 페이지
+                .usernameParameter("loginId") //username(아이디)를 내가 설정한 값으로 지정
                 .and()
                 .oauth2Login()
                 .loginPage("/login")

@@ -6,5 +6,5 @@ import com.example.board.repository.UserVO;
 public interface UserService {
 
     public int join(JoinReqDTO joinReqDTO);
-    public UserVO findByUsername(String username);
+    public UserVO findByLoginId(String loginId);
 }

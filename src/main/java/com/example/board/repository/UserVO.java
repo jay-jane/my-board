@@ -11,9 +11,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Data
 public class UserVO {
     private long id;
-    private String username;
+    private String loginId;
     private String password;
     private String name;
     private String nickname;
@@ -26,4 +27,12 @@ public class UserVO {
     private String role;
     private String provider;
     private String provider_id;
+
+    public UserVO(String loginId, String password, String role, String provider, String provider_id) {
+        this.loginId = loginId;
+        this.password = password;
+        this.role = role;
+        this.provider = provider;
+        this.provider_id = provider_id;
+    }
 }

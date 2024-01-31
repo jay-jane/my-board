@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class JoinReqDTO {
-    private String username;
+    private String loginId;
     private String password;
     private String name;
     private String nickname;

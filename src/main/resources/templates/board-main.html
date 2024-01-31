@@ -216,20 +216,21 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <img src="assets/img/logo.png" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${nickname}">Guest</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
+                        <h6 th:text="${nickname} + '님!'">Guest</h6>
+                        <span>안녕하세요</span>
                     </li>
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="mypage">
+                        <a class="dropdown-item d-flex align-items-center" href="/mypage">
                             <i class="bi bi-person"></i>
                             <span>내 정보</span>
                         </a>
@@ -259,21 +260,21 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="mypage">
+            <a class="nav-link collapsed" href="/mypage">
                 <i class="bi bi-person"></i>
                 <span>내 정보</span>
             </a>
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="signin">
+            <a class="nav-link collapsed" href="/signin">
                 <i class="bi bi-card-list"></i>
                 <span>회원 가입</span>
             </a>
         </li><!-- End Register Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="login">
+            <a class="nav-link collapsed" href="/login">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>로그인</span>
             </a>
@@ -289,61 +290,60 @@
     </ul>
 
 </aside><!-- End Sidebar-->
-<div layout:fragment="content">
-    <main id="main" class="main">
+<main id="main" class="main">
 
-        <div class="pagetitle">
-            <h1>INFO</h1>
-        </div><!-- End Page Title -->
+    <div class="pagetitle">
+        <h1>INFO</h1>
+    </div><!-- End Page Title -->
 
-        <section class="section">
-            <div class="row">
-                <div class="col-lg-12">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
 
-                    <div class="card">
-                        <div class="card-body"><br>
-                            <p>추천을 많이 받은 게시물은 상단에 노출됩니다.</p>
+                <div class="card">
+                    <div class="card-body"><br>
+                        <p>추천을 많이 받은 게시물은 상단에 노출됩니다.</p>
 
-                            <!-- Table with stripped rows -->
-                            <!-- <table class="table datatable"> -->
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">글 번호</th>
-                                    <th scope="col">제목</th>
-                                    <th scope="col">작성자</th>
-                                    <th scope="col">추천수</th>
-                                    <th scope="col">조회수</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td id="board-title-td" onmouseover="this.style.backgroundColor='#f3f3f3'"
-                                        onmouseout="this.style.backgroundColor='transparent'">
+                        <!-- Table with stripped rows -->
+                        <!-- <table class="table datatable"> -->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">글 번호</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">작성자</th>
+                                <th scope="col">추천수</th>
+                                <th scope="col">조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td id="board-title-td" onmouseover="this.style.backgroundColor='#f3f3f3'"
+                                    onmouseout="this.style.backgroundColor='transparent'">
                                         <span id="board-title" onclick="location.href='board/view'"
                                               onmouseover="this.style.cursor='pointer'">예시</span>
-                                    </td>
-                                    <td>이이이</td>
-                                    <td>5</td>
-                                    <td>999</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <!-- End Table with stripped rows -->
-                            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='board/write'">
-                                <b/>글
-                                쓰기
-                            </button>
-                        </div>
+                                </td>
+                                <td>이이이</td>
+                                <td>5</td>
+                                <td>999</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='board/write'">
+                            <b/>글
+                            쓰기
+                        </button>
                     </div>
-
                 </div>
-            </div>
-        </section>
 
-    </main><!-- End #main -->
-</div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
