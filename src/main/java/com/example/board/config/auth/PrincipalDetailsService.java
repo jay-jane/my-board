@@ -20,9 +20,9 @@ public class PrincipalDetailsService implements UserDetailsService {
     public UserService userService;
 
     @Override //Security Session(안에 Authentication(안에 UserDetails))
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("username : {}", username);
-        UserVO userEntity = userService.findByUsername(username);
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        logger.info("loginId : {}", loginId);
+        UserVO userEntity = userService.findByLoginId(loginId);
 
         if(userEntity != null) {
             return new PrincipalDetails(userEntity); //PrincipalDetails 객체를 리턴 받기 위해 오버라이드 한 것

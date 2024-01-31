@@ -19,8 +19,8 @@ public class UserController {
 
     @PostMapping("/join")
     public String join(HttpServletRequest request) {
-        String username = request.getParameter("username");
-        logger.info("username : {}", username);
+        String loginId = request.getParameter("loginId");
+        logger.info("loginId : {}", loginId);
         return "redirect:/login";
     }
 

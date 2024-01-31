@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,28 +26,27 @@ public class IndexController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping(value = {"/", "/board"}) //일반, OAuth 로그인 모두 PrincipalDetails에 정보를 담을 수 있음
-    public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         if (principalDetails != null) {
-            logger.info("user role : {}", principalDetails.getUserVO().getRole());
+//            logger.info("user role : {}", principalDetails.getUserVO().getRole());
+            model.addAttribute("nickname", principalDetails.getUserVO().getNickname());
         }
         return "board-main";
     }
 
     @GetMapping("/login")
     public String logIn() {
-
         return "log-in";
     }
 
     @GetMapping("/signin")
     public String signIn() {
-
         return "sign-in";
     }
 
     @PostMapping("/signinForm")
     public String signInForm(JoinReqDTO joinReqDTO) {
-        logger.info("user : {}", joinReqDTO.toString());
+//        logger.info("user : {}", joinReqDTO.toString());
         joinReqDTO.setRole("MEMBER");
         String rawPassword = joinReqDTO.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
@@ -58,7 +58,6 @@ public class IndexController {
 
     @GetMapping("/mypage")
     public String myPage() {
-
         return "my-page";
     }
 

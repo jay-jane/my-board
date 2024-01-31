@@ -5,6 +5,7 @@ import com.example.board.controller.IndexController;
 import com.example.board.repository.JoinReqDTO;
 import com.example.board.repository.UserVO;
 import com.example.board.service.user.UserService;
+import com.example.board.util.Namer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,40 +30,40 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Override //소셜(구글) 로그인 진행 후 후처리 되는 메서드 - 구글로부터 받은 userRequest 데이터 처리
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        logger.info("ClientRegistration : {}", userRequest.getClientRegistration());
+//        logger.info("ClientRegistration : {}", userRequest.getClientRegistration());
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
         //구글 로그인 버튼 클릭 > 구글 로그인 창 > 로그인 완료 > code 리턴(oauth2라이브러리) > AccessToken 요청
         //userRequest 정보 받음 > loadUser 메서드 호출 > 구글로부터 회원 프로필 받음
-        logger.info("Attributes : {}", oAuth2User.getAttributes());
+//        logger.info("Attributes : {}", oAuth2User.getAttributes());
         //회원가입 진행
         String provider = userRequest.getClientRegistration().getClientId(); //google
         String providerId = oAuth2User.getAttribute("sub");
-        String username = provider + "_" + providerId; //google_
+        String loginId = provider + "_" + providerId; //google_###########
         String password = bCryptPasswordEncoder.encode("의미없는");
+        String name = oAuth2User.getAttribute("name");
         String email = oAuth2User.getAttribute("email");
-        String role = "MEMBER";
+        String role = "ROLE_MEMBER";
 
-        UserVO userEntity = userService.findByUsername(username);
+        UserVO userEntity = userService.findByLoginId(loginId);
         //login_id, password, name, nickname, birth, phone, email, provider, provider_id, role
         if (userEntity == null) {
             logger.info("최초 구글 로그인, 자동 회원가입 진행");
             JoinReqDTO joinReqDTO = new JoinReqDTO();
-            joinReqDTO.setUsername(username);
+            Namer namer = new Namer();
+            joinReqDTO.setLoginId(loginId);
             joinReqDTO.setPassword(password);
-            joinReqDTO.setEmail("email");
+            joinReqDTO.setName(name);
+            joinReqDTO.setNickname(namer.getRandomNickname());
+            joinReqDTO.setEmail(email);
             joinReqDTO.setRole(role);
             joinReqDTO.setProvider(provider);
             joinReqDTO.setProvider_id(providerId);
             userService.join(joinReqDTO);
-            if (userService.join(joinReqDTO) == 1) {
-                logger.info("구글 로그인, 자동 회원가입 완료");
-            } else {
-                logger.info("자동 회원가입 실패");
-            }
         } else {
             logger.info("구글 로그인 등록 회원");
         }
+
         //PrincipalDetails 객체를 리턴 받기 위해 오버라이드 한 것
         return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
     }
