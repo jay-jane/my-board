@@ -18,7 +18,7 @@ public class Namer {
     }
 
     private static String lastName() {
-        List<String> names = Arrays.asList("강아지", "고양이", "낙타", "펭귄", "라마", "타조", "비행기", "쿼카", "하마", "토끼");
+        List<String> names = Arrays.asList("강아지", "고양이", "낙타", "펭귄", "라마", "타조", "비행기", "쿼카", "하마", "토끼", "알파카");
         return names.get(random.nextInt(names.size() - 1));
     }
 
