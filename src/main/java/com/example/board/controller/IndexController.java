@@ -47,7 +47,7 @@ public class IndexController {
     @PostMapping("/signinForm")
     public String signInForm(JoinReqDTO joinReqDTO) {
 //        logger.info("user : {}", joinReqDTO.toString());
-        joinReqDTO.setRole("MEMBER");
+        joinReqDTO.setRole("ROLE_MEMBER");
         String rawPassword = joinReqDTO.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         joinReqDTO.setPassword(encPassword);
