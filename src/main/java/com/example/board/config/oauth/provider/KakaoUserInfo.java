@@ -4,9 +4,9 @@ import java.util.Map;
 
 public class KakaoUserInfo implements OAuth2UserInfo {
 
-    private Map<String, Object> attributes; //oauth2User.getAttributes()
-    private Map<String, String> kakaoEmail;
-    private Map<String, String> kakaoName;
+    private final Map<String, Object> attributes; //oauth2User.getAttributes()
+    private final Map<String, String> kakaoEmail;
+    private final Map<String, String> kakaoName;
 
     public KakaoUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
@@ -41,11 +41,11 @@ public class KakaoUserInfo implements OAuth2UserInfo {
 
     @Override
     public String getEmail() {
-        return String.valueOf(kakaoEmail.get("email"));
+        return kakaoEmail.get("email");
     }
 
     @Override
     public String getName() {
-        return String.valueOf(kakaoName.get("nickname"));
+        return kakaoName.get("nickname");
     }
 }

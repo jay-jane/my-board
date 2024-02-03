@@ -56,7 +56,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        System.out.println("확인 : " + userVO);
         return userVO.getLoginId();
     }
 

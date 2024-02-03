@@ -9,13 +9,18 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 
 @Configuration //클래스를 구성 클래스로 표시
 @EnableWebSecurity //스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 //secured, preAuthorize, postAuthorize 어노테이션 활성화
-public class SecurityConfig {
+public class WebSecurityConfig {
 
     @Autowired
     private PrincipalOauth2UserService principalOauth2UserService;
@@ -24,6 +29,7 @@ public class SecurityConfig {
     //기존의 configure 메서드가 아닌 filterChain 메서드로 사용
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable();
         http.authorizeRequests()
                 .requestMatchers("/board/write").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_MANAGER')")
@@ -58,5 +64,17 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID");
 
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.addAllowedHeader("**");
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

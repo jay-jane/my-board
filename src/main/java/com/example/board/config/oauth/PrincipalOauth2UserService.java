@@ -68,7 +68,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             Namer namer = new Namer();
             joinReqDTO.setLoginId(loginId);
             joinReqDTO.setPassword(password);
-            logger.info("확인 : {}", name);
             joinReqDTO.setName(name);
             joinReqDTO.setNickname(namer.getRandomNickname());
             joinReqDTO.setEmail(email);

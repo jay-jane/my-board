@@ -15,8 +15,9 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,7 +45,8 @@
 <main>
     <div class="container">
 
-        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <section
+                class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
@@ -70,9 +72,11 @@
                                         <label for="loginId" class="form-label">아이디</label>
                                         <div class="input-group has-validation">
                                             <input type="text" name="loginId" class="form-control" id="loginId"
-                                                   required>
+                                                   required />
                                             <div class="invalid-feedback">아이디를 입력해주세요.</div>
-                                            <button type="button" class="btn btn-primary">중복 확인</button>
+                                            <button type="button" class="btn btn-primary" id="checkButton"
+                                                    onclick="checkId()">중복
+                                                확인</button>
                                         </div>
                                     </div>
 
@@ -84,15 +88,16 @@
                                     </div>
                                     <div class="col-12">
                                         <label for="checkPassword" class="form-label">비밀번호 확인</label>
-                                        <input type="password" name="checkPassword" class="form-control" id="checkPassword"
-                                               required>
-                                        <div class="invalid-feedback">비밀번호를 입력해주세요</div>
+                                        <input type="password" name="checkPassword" class="form-control"
+                                               id="checkPassword" onkeyup="checkPw()" required />
+                                        <div class="invalid-feedback" id="CheckPwValid">비밀번호가 일치하지 않습니다</div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="nickname" class="form-label">닉네임</label>
-                                        <input type="text" name="nickname" class="form-control" id="nickname" required>
-                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
+                                        <input type="text" name="nickname" class="form-control" id="nickname"
+                                               onblur="checkNickname()" required />
+                                        <div class="invalid-feedback">닉네임은 필수 항목입니다.</div>
                                     </div>
 
                                     <div class="col-12">
@@ -103,26 +108,25 @@
 
                                     <div class="col-12">
                                         <label for="birth" class="form-label">생년월일</label>
-                                        <input type="text" name="birth" class="form-control" id="birth" required>
-                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
+                                        <input type="date" name="birth" class="form-control" id="birth" required />
                                     </div>
 
                                     <div class="col-12">
                                         <label for="email" class="form-label">이메일</label>
-                                        <input type="email" name="email" class="form-control" id="email">
+                                        <input type="email" name="email" class="form-control" id="email" />
                                     </div>
 
                                     <div class="col-12">
                                         <label for="phone" class="form-label">연락처</label>
-                                        <input type="text" name="phone" class="form-control" id="phone" required>
+                                        <input type="tel" name="phone" class="form-control" id="phone" required />
                                         <div class="invalid-feedback">연락처를 입력해 주세요</div>
                                     </div>
 
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">완료</button>
+                                        <button class="btn btn-primary w-100" type="submit" onclick="submitJoin()">완료</button>
                                     </div>
                                     <div class="col-12">
-                                        <p class="small mb-0">계정이 이미 있으신가요? <a href="/login"><b/>로그인</a></p>
+                                        <p class="small mb-0">계정이 이미 있으신가요? <a href="/login"><b />로그인</a></p>
                                     </div>
                                 </form>
 
@@ -152,6 +156,76 @@
 
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
+
+<script>
+    function checkId() {
+        let id_tag = document.getElementById('loginId');
+        if (id_tag.value != '') {
+            let request = new XMLHttpRequest();
+            request.open('POST', 'http://localhost:8081/checkId', true);
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send("loginId=" + id_tag.value);
+            request.onload = () => {
+                if (request.status == 200) {
+                    console.log(request.response);
+                    if (request.response == 'true') {
+                        alert('이미 존재하는 아이디입니다');
+                        id_tag.value = '';
+                        id_tag.style.borderColor = 'red';
+                    } else {
+                        alert('사용하실 수 있는 아이디입니다');
+                        id_tag.style.borderColor = 'green';
+                    }
+                }
+            }
+        } else {
+            alert('아이디를 입력해 주세요');
+        }
+    }
+
+    function checkPw() {
+        let op = document.querySelector('#password');
+        let cp = document.querySelector('#checkPassword');
+        let valid = document.querySelector('#CheckPwValid');
+        console.log(op.value, cp.value, valid.innerHTML);
+        if (op.value == cp.value) {
+            op.style.borderColor = 'green';
+            cp.style.borderColor = 'green';
+            valid.style.display = 'none';
+        } else {
+            op.style.borderColor = 'red';
+            cp.style.borderColor = 'red';
+            valid.style.display = 'block';
+        }
+    }
+
+    function checkNickname() {
+        let nick_tag = document.querySelector('#nickname');
+        if (nick_tag.value != '') {
+            let request = new XMLHttpRequest();
+            request.open('POST', 'http://localhost:8081/checkNickname', true);
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.send("nickname=" + nick_tag.value);
+            request.onload = () => {
+                if (request.status == 200) {
+                    if (request.response > 0) {
+                        alert('이미 존재하는 닉네임입니다');
+                        nick_tag.style.borderColor = 'red';
+                        nick_tag.value = '';
+                        console.log(request.response.data);
+                    } else {
+                        nick_tag.style.borderColor = 'green';
+                        console.log(request.response);
+                    }
+                }
+            }
+        }
+    }
+
+    function submitJoin() {
+        alert('회원가입이 완료되었습니다!');
+    }
+</script>
 
 </body>
 

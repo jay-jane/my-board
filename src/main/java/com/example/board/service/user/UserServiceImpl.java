@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.findByLoginId(loginId);
     }
 
+    @Override
+    public int findByNickname(String nickname) {
+        return userMapper.findByNickname(nickname);
+    }
+
 }

@@ -5,8 +5,13 @@
         select * from user where login_id = #{loginId}
     </select>
 
+    <select id="findByNickname" resultType="int">
+        select count(*) from user where nickname = #{nickname};
+    </select>
+
     <insert id="join" parameterType="JoinReqDTO">
         insert into user(login_id, password, name, nickname, birth, phone, email, provider, provider_id, role)
-        values(#{loginId}, #{password}, #{name}, #{nickname}, #{birth}, #{phone}, #{email}, #{provider}, #{provider_id}, #{role})
+        values(#{loginId}, #{password}, #{name}, #{nickname}, #{birth}, #{phone}, #{email}, #{provider}, #{provider_id},
+        #{role})
     </insert>
 </mapper>
