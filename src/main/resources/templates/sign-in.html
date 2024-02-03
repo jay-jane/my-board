@@ -75,7 +75,7 @@
                                                    required />
                                             <div class="invalid-feedback">아이디를 입력해주세요.</div>
                                             <button type="button" class="btn btn-primary" id="checkButton"
-                                                    onclick="checkId()">중복
+                                                    onclick="checkLoginId()">중복
                                                 확인</button>
                                         </div>
                                     </div>
@@ -158,13 +158,13 @@
 <script src="assets/js/main.js"></script>
 
 <script>
-    function checkId() {
+    function checkLoginId() {
         let id_tag = document.getElementById('loginId');
         if (id_tag.value != '') {
             let request = new XMLHttpRequest();
-            request.open('POST', 'http://localhost:8081/checkId', true);
+            request.open('GET', 'http://localhost:8081/checkLoginId?loginId=' + id_tag.value, true);
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            request.send("loginId=" + id_tag.value);
+            request.send();
             request.onload = () => {
                 if (request.status == 200) {
                     console.log(request.response);
@@ -203,12 +203,12 @@
         let nick_tag = document.querySelector('#nickname');
         if (nick_tag.value != '') {
             let request = new XMLHttpRequest();
-            request.open('POST', 'http://localhost:8081/checkNickname', true);
+            request.open('GET', 'http://localhost:8081/checkNickname?nickname=' + nick_tag.value, true);
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            request.send("nickname=" + nick_tag.value);
+            request.send();
             request.onload = () => {
                 if (request.status == 200) {
-                    if (request.response > 0) {
+                    if (request.response == 'true') {
                         alert('이미 존재하는 닉네임입니다');
                         nick_tag.style.borderColor = 'red';
                         nick_tag.value = '';
@@ -222,9 +222,9 @@
         }
     }
 
-    function submitJoin() {
-        alert('회원가입이 완료되었습니다!');
-    }
+<!--    function submitJoin() {-->
+<!--        alert('회원가입이 완료되었습니다!');-->
+<!--    }-->
 </script>
 
 </body>

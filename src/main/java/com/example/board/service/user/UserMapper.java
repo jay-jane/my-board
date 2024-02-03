@@ -11,5 +11,5 @@ public interface UserMapper {
 
     public UserVO findByLoginId(String loginId);
 
-    public int findByNickname(String nickname);
+    public boolean checkNickname(String nickname);
 }

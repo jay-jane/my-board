@@ -9,5 +9,7 @@ public interface UserService {
 
     public UserVO findByLoginId(String loginId);
 
-    public int findByNickname(String nickname);
+    public boolean checkLoginId(String loginId);
+
+    public boolean checkNickname(String nickname);
 }
