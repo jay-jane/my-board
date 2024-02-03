@@ -5,7 +5,7 @@ import com.example.board.config.oauth.provider.GoogleUserInfo;
 import com.example.board.config.oauth.provider.KakaoUserInfo;
 import com.example.board.config.oauth.provider.OAuth2UserInfo;
 import com.example.board.controller.IndexController;
-import com.example.board.repository.JoinReqDTO;
+import com.example.board.repository.UserJoinReqDTO;
 import com.example.board.repository.UserVO;
 import com.example.board.service.user.UserService;
 import com.example.board.util.Namer;
@@ -64,17 +64,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         //login_id, password, name, nickname, birth, phone, email, provider, provider_id, role
         if (userEntity == null) {
             logger.info("최초 로그인, 자동 회원가입 진행");
-            JoinReqDTO joinReqDTO = new JoinReqDTO();
+            UserJoinReqDTO userJoinReqDTO = new UserJoinReqDTO();
             Namer namer = new Namer();
-            joinReqDTO.setLoginId(loginId);
-            joinReqDTO.setPassword(password);
-            joinReqDTO.setName(name);
-            joinReqDTO.setNickname(namer.getRandomNickname());
-            joinReqDTO.setEmail(email);
-            joinReqDTO.setRole(role);
-            joinReqDTO.setProvider(provider);
-            joinReqDTO.setProvider_id(providerId);
-            userService.join(joinReqDTO);
+            userJoinReqDTO.setLoginId(loginId);
+            userJoinReqDTO.setPassword(password);
+            userJoinReqDTO.setName(name);
+            userJoinReqDTO.setNickname(namer.getRandomNickname());
+            userJoinReqDTO.setEmail(email);
+            userJoinReqDTO.setRole(role);
+            userJoinReqDTO.setProvider(provider);
+            userJoinReqDTO.setProvider_id(providerId);
+            userService.join(userJoinReqDTO);
             userEntity = userService.findByLoginId(loginId);
         } else {
             logger.info("구글/카카오 로그인 등록 회원");

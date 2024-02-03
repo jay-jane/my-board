@@ -1,6 +1,6 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.JoinReqDTO;
+import com.example.board.repository.UserJoinReqDTO;
 import com.example.board.repository.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public int join(JoinReqDTO joinReqDTO) {
-        return userMapper.join(joinReqDTO);
+    public int join(UserJoinReqDTO userJoinReqDTO) {
+        return userMapper.join(userJoinReqDTO);
     }
 
     @Override
