@@ -1,8 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.config.auth.PrincipalDetails;
-import com.example.board.repository.JoinReqDTO;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.UserJoinReqDTO;
 import com.example.board.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -47,13 +46,13 @@ public class IndexController {
     }
 
     @PostMapping("/signinForm") //회원가입
-    public String signInForm(JoinReqDTO joinReqDTO) {
+    public String signInForm(UserJoinReqDTO userJoinReqDTO) {
 //        logger.info("user : {}", joinReqDTO.toString());
-        joinReqDTO.setRole("ROLE_MEMBER");
-        String rawPassword = joinReqDTO.getPassword();
+        userJoinReqDTO.setRole("ROLE_MEMBER");
+        String rawPassword = userJoinReqDTO.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        joinReqDTO.setPassword(encPassword);
-        userService.join(joinReqDTO);
+        userJoinReqDTO.setPassword(encPassword);
+        userService.join(userJoinReqDTO);
 
         return "redirect:/login";
     }

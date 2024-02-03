@@ -1,4 +1,4 @@
-package com.example.board.controller.user;
+package com.example.board.controller;
 
 import com.example.board.controller.IndexController;
 import com.example.board.service.user.UserService;
