@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 //Security Session > Authentication > UserDetails(PrincipalDetails)
 @Getter
 @NoArgsConstructor
-@Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private UserVO userVO;

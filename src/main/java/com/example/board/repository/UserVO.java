@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Data
 public class UserVO {
     private long id;
     private String loginId;
