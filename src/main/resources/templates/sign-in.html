@@ -66,64 +66,71 @@
                                     <h5 class="card-title text-center pb-0 fs-4">회원 가입</h5>
                                 </div>
 
-                                <form action="/signinForm" method="post" class="row g-3 needs-validation">
+                                <form class="row g-3 needs-validation">
 
                                     <div class="col-12">
-                                        <label for="loginId" class="form-label">아이디</label>
+                                        <label for="login-id" class="form-label">아이디<span
+                                                style="color: red;">*</span></label>
                                         <div class="input-group has-validation">
-                                            <input type="text" name="loginId" class="form-control" id="loginId"
+                                            <input type="text" name="login-id" class="form-control" id="login-id"
                                                    required />
-                                            <div class="invalid-feedback">아이디를 입력해주세요.</div>
                                             <button type="button" class="btn btn-primary" id="checkButton"
-                                                    onclick="checkLoginId()">중복
-                                                확인</button>
+                                                    onclick="checkLoginId()">중복 확인</button>
+                                            <div class="invalid-feedback" id="invalid-login-id"></div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="password" class="form-label">비밀번호</label>
+                                        <label for="password" class="form-label">비밀번호<span
+                                                style="color: red;">*</span></label>
                                         <input type="password" name="password" class="form-control" id="password"
-                                               required>
-                                        <div class="invalid-feedback">비밀번호를 입력해주세요</div>
+                                               onkeyup="checkPw()" required />
+                                        <div class="invalid-feedback" id="invalid-password"></div>
                                     </div>
                                     <div class="col-12">
-                                        <label for="checkPassword" class="form-label">비밀번호 확인</label>
-                                        <input type="password" name="checkPassword" class="form-control"
-                                               id="checkPassword" onkeyup="checkPw()" required />
-                                        <div class="invalid-feedback" id="CheckPwValid">비밀번호가 일치하지 않습니다</div>
+                                        <label for="check-password" class="form-label">비밀번호 확인<span
+                                                style="color: red;">*</span></label>
+                                        <input type="password" name="check-password" class="form-control"
+                                               id="check-password" onkeyup="checkPw()" required />
+                                        <div class="invalid-feedback" id="invalid-check-pw"></div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="nickname" class="form-label">닉네임</label>
+                                        <label for="nickname" class="form-label">닉네임<span
+                                                style="color: red;">*</span></label>
                                         <input type="text" name="nickname" class="form-control" id="nickname"
                                                onblur="checkNickname()" required />
-                                        <div class="invalid-feedback">닉네임은 필수 항목입니다.</div>
+                                        <div class="invalid-feedback" id="invalid-nickname"></div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="name" class="form-label">이름</label>
+                                        <label for="name" class="form-label">이름<span
+                                                style="color: red;">*</span></label>
                                         <input type="text" name="name" class="form-control" id="name" required>
-                                        <div class="invalid-feedback">이름은 필수 항목입니다.</div>
+                                        <div class="invalid-feedback" id="invalid-name"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="birth" class="form-label">생년월일</label>
                                         <input type="date" name="birth" class="form-control" id="birth" required />
+                                        <div class="invalid-feedback" id="invalid-birth"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="email" class="form-label">이메일</label>
                                         <input type="email" name="email" class="form-control" id="email" />
+                                        <div class="invalid-feedback" id="invalid-email"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="phone" class="form-label">연락처</label>
                                         <input type="tel" name="phone" class="form-control" id="phone" required />
-                                        <div class="invalid-feedback">연락처를 입력해 주세요</div>
+                                        <div class="invalid-feedback" id="invalid-phone"></div>
                                     </div>
 
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit" onclick="submitJoin()">완료</button>
+                                        <button class="btn btn-primary w-100" type="button"
+                                                onclick="submitJoin()">완료</button>
                                     </div>
                                     <div class="col-12">
                                         <p class="small mb-0">계정이 이미 있으신가요? <a href="/login"><b />로그인</a></p>
@@ -158,23 +165,46 @@
 <script src="assets/js/main.js"></script>
 
 <script>
+    const loginId = document.querySelector('#login-id');
+    const password = document.querySelector('#password');
+    const nickname = document.querySelector('#nickname');
+    const name = document.querySelector('#name');
+    const birth = document.querySelector('#birth');
+    const email = document.querySelector('#email');
+    const phone = document.querySelector('#phone');
+
+    const invalidPassword = document.querySelector('#invalid-password');
+    const cp = document.querySelector('#check-password');
+    let cid = '';
+
     function checkLoginId() {
-        let id_tag = document.getElementById('loginId');
-        if (id_tag.value != '') {
-            let request = new XMLHttpRequest();
-            request.open('GET', 'http://localhost:8081/checkLoginId?loginId=' + id_tag.value, true);
-            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            request.send();
-            request.onload = () => {
-                if (request.status == 200) {
-                    console.log(request.response);
-                    if (request.response == 'true') {
-                        alert('이미 존재하는 아이디입니다');
-                        id_tag.value = '';
-                        id_tag.style.borderColor = 'red';
-                    } else {
-                        alert('사용하실 수 있는 아이디입니다');
-                        id_tag.style.borderColor = 'green';
+        if (loginId.value != '') {
+            let checkKo = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            let checkSp = /^\s+|\s+$/;
+            let checkSc = /[-~!@#$%";'^,&*()_+|</>=>`?:{[\}]/;
+            if (checkKo.test(loginId.value) || checkSp.test(loginId.value) || checkSc.test(loginId.value)) {
+                alert('아이디는 영어 소문자, 숫자만 입력하실 수 있습니다');
+                loginId.value = '';
+            } else if (loginId.value.length < 6 || loginId.value.length > 12) {
+                alert('아이디는 6 ~ 12자 사이로 설정해 주세요');
+            } else {
+                const request = new XMLHttpRequest();
+                request.open('GET', 'http://localhost:8081/checkLoginId?loginId=' + loginId.value, true);
+                request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                request.send();
+                request.onload = () => {
+                    if (request.status == 200) {
+                        // console.log(request.response);
+                        if (request.response == 'true') {
+                            alert('이미 존재하는 아이디입니다');
+                            cid = '';
+                            loginId.value = '';
+                            loginId.style.borderColor = 'red';
+                        } else {
+                            alert('사용하실 수 있는 아이디입니다');
+                            cid = loginId.value;
+                            loginId.style.borderColor = 'green';
+                        }
                     }
                 }
             }
@@ -184,47 +214,139 @@
     }
 
     function checkPw() {
-        let op = document.querySelector('#password');
-        let cp = document.querySelector('#checkPassword');
-        let valid = document.querySelector('#CheckPwValid');
-        console.log(op.value, cp.value, valid.innerHTML);
-        if (op.value == cp.value) {
-            op.style.borderColor = 'green';
+
+        const checkPwValid = document.querySelector('#invalid-check-pw');
+        console.log(password.value, cp.value, checkPwValid.innerHTML);
+        if (password.value == cp.value) {
+            password.style.borderColor = 'green';
             cp.style.borderColor = 'green';
-            valid.style.display = 'none';
+            checkPwValid.style.display = 'none';
+            invalidPassword.innerHTML = '';
+            checkPwValid.innerHTML = '';
         } else {
-            op.style.borderColor = 'red';
+            password.style.borderColor = 'red';
             cp.style.borderColor = 'red';
-            valid.style.display = 'block';
+            checkPwValid.style.display = 'block';
+            checkPwValid.innerHTML = '비밀번호가 일치하지 않습니다';
         }
     }
 
     function checkNickname() {
-        let nick_tag = document.querySelector('#nickname');
-        if (nick_tag.value != '') {
-            let request = new XMLHttpRequest();
-            request.open('GET', 'http://localhost:8081/checkNickname?nickname=' + nick_tag.value, true);
+        if (nickname.value != '') {
+            const request = new XMLHttpRequest();
+            request.open('GET', 'http://localhost:8081/checkNickname?nickname=' + nickname.value, true);
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             request.send();
             request.onload = () => {
                 if (request.status == 200) {
                     if (request.response == 'true') {
                         alert('이미 존재하는 닉네임입니다');
-                        nick_tag.style.borderColor = 'red';
-                        nick_tag.value = '';
-                        console.log(request.response.data);
+                        nickname.style.borderColor = 'red';
+                        nickname.value = '';
                     } else {
-                        nick_tag.style.borderColor = 'green';
-                        console.log(request.response);
+                        nickname.style.borderColor = 'green';
                     }
                 }
             }
         }
     }
 
-<!--    function submitJoin() {-->
-<!--        alert('회원가입이 완료되었습니다!');-->
-<!--    }-->
+    function submitJoin() {
+        const data = {
+            loginId: loginId.value,
+            password: password.value,
+            nickname: nickname.value,
+            name: name.value,
+            birth: birth.value,
+            email: email.value,
+            phone: phone.value.replace(/-/g, '')
+        }
+
+        if (cid == loginId.value && cp.value == password.value) {
+            const request = new XMLHttpRequest();
+            request.open('POST', 'http://localhost:8081/signinForm', true);
+            request.setRequestHeader('Content-type', 'application/json');
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                if (request.status == 200) {
+                    if (request.response == 1) {
+                        alert('회원가입이 완료되었습니다!');
+                        window.location.replace('http://localhost:8081/login');
+                    } else {
+                        alert('회원가입에 오류가 발생했습니다. 다시 시도해 주세요');
+                        // console.log(request.response);
+                    }
+                } else if (request.status == 400) {
+                    const invalidTag = document.querySelectorAll('.invalid-feedback');
+                    const invalidLoginId = document.querySelector('#invalid-login-id');
+
+                    const invalidNickname = document.querySelector('#invalid-nickname');
+                    const invalidName = document.querySelector('#invalid-name');
+                    const invalidBirth = document.querySelector('#invalid-birth');
+                    const invalidEmail = document.querySelector('#invalid-email');
+                    const invalidPhone = document.querySelector('#invalid-phone');
+                    const errorResponse = JSON.parse(request.responseText);
+
+                    if (errorResponse.valid_loginId == null) {
+                        errorResponse.valid_loginId = '';
+                        invalidLoginId.innerHTML = errorResponse.valid_loginId;
+                    } else {
+                        invalidLoginId.innerHTML = errorResponse.valid_loginId;
+                    }
+                    if (errorResponse.valid_password == null) {
+                        errorResponse.valid_password = '';
+                        invalidPassword.innerHTML = errorResponse.valid_password;
+                    } else {
+                        invalidPassword.innerHTML = errorResponse.valid_password;
+                    }
+                    if (errorResponse.valid_nickname == null) {
+                        errorResponse.valid_nickname = '';
+                        invalidNickname.innerHTML = errorResponse.valid_nickname;
+                    } else {
+                        invalidNickname.innerHTML = errorResponse.valid_nickname;
+                    }
+                    if (errorResponse.valid_name == null) {
+                        errorResponse.valid_name = '';
+                        invalidName.innerHTML = errorResponse.valid_name;
+                    } else {
+                        invalidName.innerHTML = errorResponse.valid_name;
+                    }
+                    if (errorResponse.valid_birth == null) {
+                        errorResponse.valid_birth = '';
+                        invalidBirth.innerHTML = errorResponse.valid_birth;
+                    } else {
+                        invalidBirth.innerHTML = errorResponse.valid_birth;
+                    }
+                    if (errorResponse.valid_email == null) {
+                        errorResponse.valid_email = '';
+                        invalidEmail.innerHTML = errorResponse.valid_email;
+                    } else {
+                        invalidEmail.innerHTML = errorResponse.valid_email;
+                    }
+                    if (errorResponse.valid_phone == null) {
+                        errorResponse.valid_phone = '';
+                        invalidPhone.innerHTML = errorResponse.valid_phone;
+                    } else {
+                        invalidPhone.innerHTML = errorResponse.valid_phone;
+                    }
+
+                    invalidTag.forEach(i => i.style.display = 'block');
+
+                    alert('양식에 맞지 않는 항목이 있습니다. 확인 후 다시 제출해 주세요');
+                } else {
+                    alert('회원가입 실패');
+                    // console.error(error);
+                }
+            }
+        } else {
+            if (cid != loginId.value) {
+                alert('아이디 중복 확인을 해주세요');
+            }
+            if (cp.value != password.value) {
+                alert('비밀번호가 일치하지 않습니다. 다시 확인해 주세요');
+            }
+        }
+    }
 </script>
 
 </body>

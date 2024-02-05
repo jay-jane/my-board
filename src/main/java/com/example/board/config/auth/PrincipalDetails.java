@@ -1,6 +1,7 @@
 package com.example.board.config.auth;
 
 import com.example.board.repository.UserVO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 //Security Session > Authentication > UserDetails(PrincipalDetails)
 @Getter
 @NoArgsConstructor
+@Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private UserVO userVO;
