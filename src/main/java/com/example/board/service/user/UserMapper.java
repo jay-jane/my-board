@@ -3,6 +3,7 @@ package com.example.board.service.user;
 import com.example.board.repository.UserJoinReqDTO;
 import com.example.board.repository.UserVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.ResponseEntity;
 
 @Mapper
 public interface UserMapper {
@@ -11,5 +12,5 @@ public interface UserMapper {
 
     public UserVO findByLoginId(String loginId);
 
-    public int findByNickname(String nickname);
+    public boolean checkNickname(String nickname);
 }

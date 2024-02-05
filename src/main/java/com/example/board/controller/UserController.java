@@ -1,15 +1,19 @@
 package com.example.board.controller;
 
-import com.example.board.controller.IndexController;
+import com.example.board.repository.UserJoinReqDTO;
 import com.example.board.service.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.Map;
+
+@RestController
 @RequiredArgsConstructor
 public class UserController {
 
@@ -17,11 +21,24 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/join")
-    public String join(HttpServletRequest request) {
-        String loginId = request.getParameter("loginId");
-        logger.info("loginId : {}", loginId);
-        return "redirect:/login";
+    @PostMapping("/signinForm") //회원가입
+    public ResponseEntity<?> signInForm(@Valid @RequestBody UserJoinReqDTO userJoinReqDTO, BindingResult bindingResult) {
+        Map<String, String> result = userService.validateHandling(bindingResult);
+
+        if(bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.join(userJoinReqDTO));
     }
 
+    @GetMapping("/checkLoginId")
+    public boolean checkLoginId(@RequestParam(value = "loginId", required = false) String id) {
+        return userService.checkLoginId(id);
+    }
+
+    @GetMapping("/checkNickname")
+    public boolean checkNickname(@RequestParam(value = "nickname", required = false) String nickname) {
+        return userService.checkNickname(nickname);
+    }
 }
