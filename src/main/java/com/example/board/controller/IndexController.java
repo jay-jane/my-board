@@ -3,6 +3,7 @@ package com.example.board.controller;
 import com.example.board.config.auth.PrincipalDetails;
 import com.example.board.repository.UserJoinReqDTO;
 import com.example.board.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,7 +32,11 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public String logIn() {
+    public String logIn(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "exception", required = false) String exception,
+                        Model model) {
+            model.addAttribute("exception", exception);
+            model.addAttribute("error", error);
         return "log-in";
     }
 

@@ -64,7 +64,8 @@
                                     <h5 class="card-title text-center pb-0 fs-4">로그인</h5>
                                 </div>
 
-                                <form action="/loginForm" method="post" class="row g-3 needs-validation">
+                                <form action="/loginForm" method="post" onsubmit="loginForm()"
+                                      class="row g-3 needs-validation">
 
                                     <div class="col-12">
                                         <label for="loginId" class="form-label">ID</label>
@@ -88,16 +89,19 @@
                                                    id="rememberMe">
                                             <label class="form-check-label" for="rememberMe">ID 기억하기</label>
                                         </div>
+                                        <div th:if="${error}">
+                                            <p class="alert alert-danger" id="error-message" th:text="${exception}"></p>
+                                        </div>
                                     </div>
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Login</button>
                                     </div>
                                     <div class="col-12">
                                         <a href="/oauth2/authorization/google" src="">
-                                            <img src="assets/img/web_light_sq_SU@1x.png" />
+                                            <img src="assets/img/web_light_sq_SU@1x.png"/>
                                         </a>
                                         <a href="/oauth2/authorization/kakao">
-                                            <img src="assets/img/kakao_login_medium_narrow.png" />
+                                            <img src="assets/img/kakao_login_medium_narrow.png"/>
                                         </a>
                                     </div>
                                     <div class="col-12">
@@ -131,6 +135,25 @@
 
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
+
+<script>
+    function loginForm() {
+        const inputTag = document.querySelectorAll('.form-control');
+        const message = document.querySelector('#error-message');
+        const messageBlock = document.querySelector('#error-message');
+        const fci = document.querySelector('.form-check-input');
+        const fcl = document.querySelector('.form-check-label');
+
+        inputTag.forEach(i => {
+            i.style.borderColor = '#dee2e6';
+            i.style.backgroundImage = 'none';
+        });
+
+        fci.style.borderColor = '#dee2e6';
+        fcl.style.color = '#444444';
+        messageBlock.style.display = 'block';
+    }
+</script>
 
 </body>
 

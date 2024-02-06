@@ -1,6 +1,8 @@
 package com.example.board.controller;
 
 import com.example.board.repository.UserJoinReqDTO;
+import com.example.board.repository.UserResDTO;
+import com.example.board.repository.UserVO;
 import com.example.board.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
