@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.board.service.board.BoardMapper">
-    <insert id="registPost" parameterType="BoardRegistReqDTO">
+    <insert id="registPost" parameterType="BoardRegistReqDto">
         insert into board (title, content)
         values (#{title}, #{content})
     </insert>
+
+    <select id="getBoardContent" resultType="BoardListResDto">
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views
+        from board b
+        order by b.id desc;
+    </select>
 </mapper>

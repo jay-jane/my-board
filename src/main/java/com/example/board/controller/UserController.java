@@ -1,8 +1,6 @@
 package com.example.board.controller;
 
-import com.example.board.repository.UserJoinReqDTO;
-import com.example.board.repository.UserResDTO;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.UserJoinReqDto;
 import com.example.board.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signinForm") //회원가입
-    public ResponseEntity<?> signInForm(@Valid @RequestBody UserJoinReqDTO userJoinReqDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> signInForm(@Valid @RequestBody UserJoinReqDto userJoinReqDTO, BindingResult bindingResult) {
         Map<String, String> result = userService.validateHandling(bindingResult);
 
         if(bindingResult.hasErrors()) {

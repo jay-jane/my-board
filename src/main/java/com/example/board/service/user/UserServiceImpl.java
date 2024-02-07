@@ -1,10 +1,9 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.UserJoinReqDTO;
+import com.example.board.repository.UserJoinReqDto;
+import com.example.board.repository.UserJoinResDto;
 import com.example.board.repository.UserVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -22,12 +21,19 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public int join(UserJoinReqDTO userJoinReqDTO) {
+    public UserJoinResDto join(UserJoinReqDto userJoinReqDTO) {
         userJoinReqDTO.setRole("ROLE_MEMBER");
         String rawPassword = userJoinReqDTO.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         userJoinReqDTO.setPassword(encPassword);
-        return userMapper.join(userJoinReqDTO);
+
+        String id = userJoinReqDTO.getLoginId();
+
+        if(userMapper.join(userJoinReqDTO) == 1) {
+            UserVO vo = findByLoginId(id);
+            return new UserJoinResDto(vo.getNickname(), vo.getRole(), "회원가입 성공");
+        }
+        return new UserJoinResDto("회원가입 실패");
     }
 
     @Override

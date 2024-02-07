@@ -1,15 +1,15 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.UserJoinReqDTO;
+import com.example.board.repository.UserJoinReqDto;
+import com.example.board.repository.UserJoinResDto;
 import com.example.board.repository.UserVO;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 
 import java.util.Map;
 
 public interface UserService {
 
-    public int join(UserJoinReqDTO userJoinReqDTO);
+    public UserJoinResDto join(UserJoinReqDto userJoinReqDTO);
 
     public UserVO findByLoginId(String loginId);
 

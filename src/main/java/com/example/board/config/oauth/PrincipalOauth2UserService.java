@@ -5,7 +5,7 @@ import com.example.board.config.oauth.provider.GoogleUserInfo;
 import com.example.board.config.oauth.provider.KakaoUserInfo;
 import com.example.board.config.oauth.provider.OAuth2UserInfo;
 import com.example.board.controller.IndexController;
-import com.example.board.repository.UserJoinReqDTO;
+import com.example.board.repository.UserJoinReqDto;
 import com.example.board.repository.UserVO;
 import com.example.board.service.user.UserService;
 import com.example.board.util.Namer;
@@ -64,7 +64,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         //login_id, password, name, nickname, birth, phone, email, provider, provider_id, role
         if (userEntity == null) {
             logger.info("최초 로그인, 자동 회원가입 진행");
-            UserJoinReqDTO userJoinReqDTO = new UserJoinReqDTO();
+            UserJoinReqDto userJoinReqDTO = new UserJoinReqDto();
             Namer namer = new Namer();
             userJoinReqDTO.setLoginId(loginId);
             userJoinReqDTO.setPassword(password);

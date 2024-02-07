@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-public class UserJoinReqDTO {
+public class UserJoinReqDto {
     @NotBlank(message = "아이디는 필수 입력 항목입니다")
     @Pattern(regexp = "^[a-z0-9]{6,12}$", message = "아이디는 영어 소문자와 숫자만 입력 가능합니다 (6~12자리)")
     private String loginId;
