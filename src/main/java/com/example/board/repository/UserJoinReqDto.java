@@ -29,5 +29,5 @@ public class UserJoinReqDto {
     private String email;
     private String role;
     private String provider;
-    private String provider_id;
+    private String providerId;
 }

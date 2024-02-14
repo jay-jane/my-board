@@ -73,7 +73,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             userJoinReqDTO.setEmail(email);
             userJoinReqDTO.setRole(role);
             userJoinReqDTO.setProvider(provider);
-            userJoinReqDTO.setProvider_id(providerId);
+            userJoinReqDTO.setProviderId(providerId);
             userService.join(userJoinReqDTO);
             userEntity = userService.findByLoginId(loginId);
         } else {

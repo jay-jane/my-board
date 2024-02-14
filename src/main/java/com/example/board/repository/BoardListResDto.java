@@ -9,7 +9,10 @@ public class BoardListResDto {
     private long id;
     private String title;
     private String content;
-    private LocalDateTime reg_date;
-    private LocalDateTime mod_date;
+    private LocalDateTime regDate;
+    private LocalDateTime modDate;
     private long views;
+
+    private String nickname;
+    private String like;
 }

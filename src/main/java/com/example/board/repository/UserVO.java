@@ -20,18 +20,18 @@ public class UserVO {
     private LocalDate birth;
     private String phone;
     private String email;
-    private LocalDateTime join_date;
-    private LocalDateTime last_login_date;
+    private LocalDateTime joinDate;
+    private LocalDateTime lastLoginDate;
     private boolean is_deleted;
     private String role;
     private String provider;
-    private String provider_id;
+    private String providerId;
 
-    public UserVO(String loginId, String password, String role, String provider, String provider_id) {
+    public UserVO(String loginId, String password, String role, String provider, String providerId) {
         this.loginId = loginId;
         this.password = password;
         this.role = role;
         this.provider = provider;
-        this.provider_id = provider_id;
+        this.providerId = providerId;
     }
 }

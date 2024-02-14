@@ -2,13 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.board.service.board.BoardMapper">
     <insert id="registPost" parameterType="BoardRegistReqDto">
-        insert into board (title, content)
-        values (#{title}, #{content})
+        insert into board (title, content, member_id)
+        values (#{title}, #{content}, #{memberId})
     </insert>
 
     <select id="getBoardContent" resultType="BoardListResDto">
-        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views,
+                u.id, u.nickname
         from board b
-        order by b.id desc;
+        left join user u on b.member_id = u.id
+        order by b.id desc
+    </select>
+
+    <select id="getBoardDetail" resultType="BoardListResDto">
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views,
+                u.id, u.nickname
+        from board b
+        left join user u on b.member_id = u.id
+        where b.id = ${boardId}
     </select>
 </mapper>

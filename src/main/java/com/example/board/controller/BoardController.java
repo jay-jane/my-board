@@ -4,10 +4,8 @@ import com.example.board.repository.BoardListResDto;
 import com.example.board.repository.BoardRegistReqDto;
 import com.example.board.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,10 @@ public class BoardController {
     @GetMapping("/getBoardContent")
     public List<BoardListResDto> getBoardContent() {
         return boardService.getBoardContent();
+    }
+
+    @GetMapping("/getBoardDetail")
+    public BoardListResDto getBoardDetail(String boardId) {
+        return boardService.getBoardDetail(boardId);
     }
 }

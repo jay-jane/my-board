@@ -12,4 +12,6 @@ public interface BoardMapper {
     public int registPost(BoardRegistReqDto boardRegistReqDTO);
 
     public List<BoardListResDto> getBoardContent();
+
+    public BoardListResDto getBoardDetail(String memberId);
 }

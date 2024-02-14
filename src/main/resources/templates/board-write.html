@@ -303,7 +303,8 @@
                     <div class="card-body">
                         <div class="col-sm-10" style="margin-top: 10px; margin-bottom: 10px;">
                             <input type="text" class="form-control" id="title" name="title"
-                                   placeholder="제목을 입력해 주세요.">
+                                   placeholder="제목을 입력해 주세요."/>
+                            <input type="hidden" id="member-id" th:value="${memberId}"/>
                         </div>
                         <!-- Quill Editor Full -->
                         <div class="quill-editor-full" id="content">
@@ -360,9 +361,11 @@
     function registPost() {
         const title = document.querySelector('#title');
         const content = document.querySelector('#content');
+        const id = document.querySelector('#member-id');
         const data = {
             title: title.value,
             content: content.firstChild.innerHTML,
+            memberId: id.value,
         }
 
         if (title.value != '') {

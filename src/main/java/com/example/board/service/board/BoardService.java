@@ -10,4 +10,6 @@ public interface BoardService {
     public int registPost(BoardRegistReqDto boardRegistReqDTO);
 
     public List<BoardListResDto> getBoardContent();
+
+    public BoardListResDto getBoardDetail(String boardId);
 }
