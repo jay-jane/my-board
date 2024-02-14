@@ -18,6 +18,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools:3.2.1'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.2.1'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -30,7 +31,6 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j:8.2.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 

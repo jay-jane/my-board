@@ -33,7 +33,7 @@ public class IndexController {
         }
         List<BoardListResDto> boardList = boardService.getBoardContent();
         model.addAttribute("boardList", boardList);
-        return "board-main";
+        return "/board-main";
     }
 
     @GetMapping("/login")
@@ -65,5 +65,10 @@ public class IndexController {
     public String boardView(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
         model.addAttribute("detail", boardService.getBoardDetail(boardId));
         return "board-view";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "content";
     }
 }
