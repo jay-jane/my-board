@@ -33,7 +33,7 @@ public class IndexController {
         }
         List<BoardListResDto> boardList = boardService.getBoardContent();
         model.addAttribute("boardList", boardList);
-        return "/board-main";
+        return "/board/board-main";
     }
 
     @GetMapping("/login")
@@ -42,33 +42,28 @@ public class IndexController {
                         Model model) {
         model.addAttribute("exception", exception);
         model.addAttribute("error", error);
-        return "log-in";
+        return "/user/log-in";
     }
 
     @GetMapping("/signin")
     public String signIn() {
-        return "sign-in";
+        return "/user/sign-in";
     }
 
     @GetMapping("/mypage")
     public String myPage() {
-        return "my-page";
+        return "/user/my-page";
     }
 
     @GetMapping("/board/write")
     public String boardWrite(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         model.addAttribute("memberId", principalDetails.getUserVO().getId());
-        return "board-write";
+        return "/board/board-write";
     }
 
     @GetMapping("/board/view/{boardId}")
     public String boardView(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
         model.addAttribute("detail", boardService.getBoardDetail(boardId));
-        return "board-view";
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "content";
+        return "/board/board-view";
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:fragment="setContent(content)">
     <head>
@@ -213,15 +213,19 @@
                 </li><!-- End Messages Nav -->
 
                 <li class="nav-item dropdown pe-3">
-
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <img src="/assets/img/logo.png" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${nickname}">Guest</span>
+                        <span class="d-none d-md-block dropdown-toggle ps-2"
+                              sec:authorize="isAuthenticated()" sec:authentication="principal.userVO.nickname">login_user</span>
+                        <span class="d-none d-md-block dropdown-toggle ps-2" sec:authorize="isAnonymous()">Guest</span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6 th:text="${nickname} + '님!'">Guest</h6>
+                            <h6 sec:authorize="isAuthenticated()" sec:authentication="principal.userVO.nickname"
+                                style="display: inline;">login_user</h6>
+                            <h6 sec:authorize="isAuthenticated()" style="display: inline;"> 님!</h6><br/>
+                            <h6 sec:authorize="isAnonymous()">Guest</h6>
                             <span>안녕하세요</span>
                         </li>
 
