@@ -47,10 +47,42 @@
                                     </tbody>
                                 </table>
                                 <!-- End Table with stripped rows -->
+                                <div th:if="${!boardList.isEmpty()}">
+                                    <div th:style="${'text-align: center'}">
+                                        <ul class="pagination"
+                                            th:with="pageNumber = ${boardList.pageable.pageNumber},
+                                                     pageSize = ${boardList.pageable.pageSize},
+                                                     totalPages = ${boardList.totalPages},
+                                                     startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+                                                     tempEndPage = ${startPage + pageSize - 1},
+                                                     endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
+
+                                            <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
+                                                <a class="page-link"
+                                                   th:href="${boardList.first} ? '#' : @{/(page=${pageNumber - 1})}">
+                                                    <span aria-hidden="true">&lt;</span>
+                                                </a>
+                                            </li>
+
+                                            <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                                                th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
+                                                <a th:text="${page}" class="page-link"
+                                                   th:href="@{/(page=${page - 1})}"></a>
+                                            </li>
+
+                                            <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
+                                                <a class="page-link"
+                                                   th:href="${boardList.last} ? '#' : @{/(page=${pageNumber + 1})}"
+                                                   aria-label="Next">
+                                                    <span aria-hidden="true">&gt;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <button type="button" class="btn btn-primary btn-sm"
                                         onclick="location.href='board/write'">
-                                    <b/>글
-                                    쓰기
+                                    <strong>글쓰기</strong>
                                 </button>
                             </div>
                         </div>

@@ -40,13 +40,13 @@ public class BoardController {
         return boardService.getBoardDetail(boardId);
     }
 
-    @GetMapping("/paging")
-    public ResponseEntity<?> getList(BoardCountReqDto dto, @PageableDefault(size = 10) Pageable pageable) {
+    @GetMapping("/getBoardList")
+    public ResponseEntity<?> getBoardList(BoardCountReqDto dto, @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(boardService.getBoardList(dto, pageable));
     }
 
-    @GetMapping("/getListCount") //검색 기능에 추가할 것
-    public int getListCount(@RequestParam(value = "title", required = false) String title,
+    @GetMapping("/getBoardListCount") //검색 기능에 추가할 것
+    public int getBoardListCount(@RequestParam(value = "title", required = false) String title,
                             @RequestParam(value = "nickname", required = false) String nickname) {
         BoardCountReqDto dto = new BoardCountReqDto(title, nickname);
         return boardMapper.getBoardListCount(dto);
