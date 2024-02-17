@@ -51,10 +51,10 @@
                                     <div th:style="${'text-align: center'}">
                                         <ul class="pagination"
                                             th:with="pageNumber = ${boardList.pageable.pageNumber},
-                                                     pageSize = ${boardList.pageable.pageSize},
+                                                     buttonSize = 5,
                                                      totalPages = ${boardList.totalPages},
-                                                     startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
-                                                     tempEndPage = ${startPage + pageSize - 1},
+                                                     startPage = ${T(java.lang.Math).floor(pageNumber / buttonSize) * buttonSize + 1},
+                                                     tempEndPage = ${startPage + buttonSize - 1},
                                                      endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
                                             <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
                                                 <a class="page-link"

@@ -36,6 +36,7 @@ public class IndexController {
     public String mainPage(BoardCountReqDto dto, Pageable pageable, Model model) {
         Page<Map<String, Object>> boardList = boardService.getBoardList(dto, pageable);
         model.addAttribute("boardList", boardList);
+//        logger.info("ㅇㅇ-{}", boardList.);
         return "/board/board-main";
 
 //        todo 확인 후 삭제
