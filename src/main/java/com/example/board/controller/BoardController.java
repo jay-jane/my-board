@@ -41,7 +41,7 @@ public class BoardController {
     }
 
     @GetMapping("/getBoardList")
-    public ResponseEntity<?> getBoardList(BoardCountReqDto dto, @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<?> getBoardList(BoardCountReqDto dto, Pageable pageable) {
         return ResponseEntity.ok(boardService.getBoardList(dto, pageable));
     }
 

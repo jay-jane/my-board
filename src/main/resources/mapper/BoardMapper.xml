@@ -35,7 +35,7 @@
             and u.nickname like concat('%',#{data.nickname},'%')
         </if>
         order by b.id desc
-        limit #{pageable.pageSize} offset #{pageable.offset}
+        limit #{pageable.offset}, #{pageable.pageSize}
     </select>
 
     <select id="getBoardListCount" parameterType="BoardCountReqDto" resultType="int">

@@ -33,7 +33,7 @@ public class IndexController {
     private final BoardService boardService;
 
     @GetMapping(value = {"/", "/board"}) //일반, OAuth 로그인 모두 PrincipalDetails에 정보를 담을 수 있음
-    public String mainPage(BoardCountReqDto dto, @PageableDefault(size = 10) Pageable pageable, Model model) {
+    public String mainPage(BoardCountReqDto dto, Pageable pageable, Model model) {
         Page<Map<String, Object>> boardList = boardService.getBoardList(dto, pageable);
         model.addAttribute("boardList", boardList);
         return "/board/board-main";
