@@ -57,12 +57,14 @@
 
         <div class="search-bar">
             <form class="search-form d-flex align-items-center">
-                    <select class="form-select" style="width: 40%;">
-                        <option value="title">제목</option>
-                        <option value="nickname">닉네임</option>
-                    </select>
-                    <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                    <button type="button" title="Search"><i class="bi bi-search"></i></button>
+                <select id="searchCategory" class="form-select" onchange="selectCategory(this.value)"
+                        style="width: 40%;">
+                    <option name="title" value="title">제목</option>
+                    <option name="content" value="content">내용</option>
+                    <option name="nickname" value="nickname">닉네임</option>
+                </select>
+                <input type="text" name="query" id="search" placeholder="검색어를 입력해 주세요" title="Enter search keyword"/>
+                <button type="submit" title="Search" onclick="searchItem(event)"><i class="bi bi-search"></i></button>
             </form>
         </div><!-- End Search Bar -->
 
@@ -331,6 +333,39 @@
     <!-- Template Main JS File -->
     <script src="/assets/js/main.js"></script>
 
+    <script>
+        let category = 'title';
+
+        function searchItem(e) {
+            e.preventDefault();
+
+            const item = document.querySelector('#search');
+
+            if (item.value != '' && item.value != null) {
+                const request = new XMLHttpRequest();
+                request.open('GET', 'http://localhost:8081/getBoardListCount?category=' + category + '&keyword=' + item.value, true);
+                request.send();
+                request.onload = () => {
+                    if (request.status == 200) {
+                        console.log(request.response);
+                        if (request.response == 0) {
+                            alert('검색 결과가 없습니다');
+                        } else {
+                            window.location.href = 'http://localhost:8081/board?page=1&category=' + category + '&keyword=' + item.value;
+                        }
+                    } else {
+                        console.log('검색 카운트 에러');
+                    }
+                }
+            } else {
+                alert('검색어를 입력하세요');
+            }
+        }
+
+        function selectCategory(value) {
+            category = value;
+        }
+    </script>
     </body>
 </th:block>
 </html>

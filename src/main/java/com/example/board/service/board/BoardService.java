@@ -13,8 +13,6 @@ public interface BoardService {
 
     int registPost(BoardRegistReqDto boardRegistReqDTO);
 
-    List<BoardListResDto> getBoardContent();
-
     BoardListResDto getBoardDetail(String boardId);
 
     Page<Map<String, Object>> getBoardList(BoardCountReqDto dto, Pageable pageable);

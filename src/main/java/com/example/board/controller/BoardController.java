@@ -30,11 +30,6 @@ public class BoardController {
         return boardService.registPost(boardRegistReqDTO);
     }
 
-    @GetMapping("/getBoardContent")
-    public List<BoardListResDto> getBoardContent() {
-        return boardService.getBoardContent();
-    }
-
     @GetMapping("/getBoardDetail")
     public BoardListResDto getBoardDetail(String boardId) {
         return boardService.getBoardDetail(boardId);
@@ -45,10 +40,10 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardList(dto, pageable));
     }
 
-    @GetMapping("/getBoardListCount") //검색 기능에 추가할 것
-    public int getBoardListCount(@RequestParam(value = "title", required = false) String title,
-                            @RequestParam(value = "nickname", required = false) String nickname) {
-        BoardCountReqDto dto = new BoardCountReqDto(title, nickname);
+    @GetMapping("/getBoardListCount")
+    public int getBoardListCount(@RequestParam(value = "category", required = false) String category,
+                                 @RequestParam(value = "keyword", required = false) String keyword) {
+        BoardCountReqDto dto = new BoardCountReqDto(category, keyword);
         return boardMapper.getBoardListCount(dto);
     }
 }

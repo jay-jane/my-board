@@ -25,11 +25,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardListResDto> getBoardContent() {
-        return boardMapper.getBoardContent();
-    }
-
-    @Override
     public BoardListResDto getBoardDetail(String boardId) {
         return boardMapper.getBoardDetail(boardId);
     }

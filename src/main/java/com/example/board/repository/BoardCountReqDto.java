@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BoardCountReqDto {
-    private String title;
-    private String nickname;
+    private String category;
+    private String keyword;
 
-    public BoardCountReqDto(String title, String nickname) {
-        this.title = title;
-        this.nickname = nickname;
+    public BoardCountReqDto(String category, String keyword) {
+        this.category = category;
+        this.keyword = keyword;
     }
 }

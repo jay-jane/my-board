@@ -6,14 +6,6 @@
         values (#{title}, #{content}, #{memberId})
     </insert>
 
-    <select id="getBoardContent" resultType="BoardListResDto">
-        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views,
-        u.id, u.nickname
-        from board b
-        left join user u on b.member_id = u.id
-        order by b.id desc
-    </select>
-
     <select id="getBoardDetail" resultType="BoardListResDto">
         select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views,
         u.id, u.nickname
@@ -28,11 +20,16 @@
         from board b
         left join user u on b.member_id = u.id
         where 1 = 1
-        <if test="data.title != null and data.title != ''">
-            and b.title like concat('%',#{data.title},'%')
-        </if>
-        <if test="data.nickname != null and data.nickname != ''">
-            and u.nickname like concat('%',#{data.nickname},'%')
+        <if test="data.keyword != null and data.keyword != ''">
+            <if test="data.category == 'title'">
+                and b.title like concat('%',#{data.keyword},'%')
+            </if>
+            <if test="data.category == 'content'">
+                and b.content like concat('%', #{data.keyword}, '%')
+            </if>
+            <if test="data.category == 'nickname'">
+                and u.nickname like concat('%',#{data.keyword},'%')
+            </if>
         </if>
         order by b.id desc
         limit #{pageable.offset}, #{pageable.pageSize}
@@ -43,11 +40,16 @@
         from board b
         left join user u on b.member_id = u.id
         where 1 = 1
-        <if test="title != null and title != ''">
-            and b.title like concat('%',#{title},'%')
-        </if>
-        <if test="nickname != null and nickname != ''">
-            and u.nickname like concat('%',#{nickname},'%')
+        <if test="keyword != null and keyword != ''">
+            <if test="category == 'title'">
+                and b.title like concat('%', #{keyword}, '%')
+            </if>
+            <if test="category == 'content'">
+                and b.content like concat('%', #{keyword}, '%')
+            </if>
+            <if test="category == 'nickname'">
+                and u.nickname like concat('%', #{keyword}, '%')
+            </if>
         </if>
     </select>
 </mapper>

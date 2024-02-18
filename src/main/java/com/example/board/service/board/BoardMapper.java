@@ -14,8 +14,6 @@ public interface BoardMapper {
 
     int registPost(BoardRegistReqDto boardRegistReqDTO);
 
-    List<BoardListResDto> getBoardContent();
-
     BoardListResDto getBoardDetail(String memberId);
 
     List<Map<String, Object>> getBoardList(RequestList<?> requestList);

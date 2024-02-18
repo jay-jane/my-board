@@ -58,14 +58,14 @@
                                                      endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
                                             <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
                                                 <a class="page-link"
-                                                   th:href="${boardList.first} ? '#' : @{/(page=1)}">
+                                                   th:href="${boardList.first} ? '#' : @{board(page=1, category=${dto.category}, keyword=${dto.keyword})}">
                                                     <span aria-hidden="true">&lt;&lt;</span>
                                                 </a>
                                             </li>
 
                                             <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
                                                 <a class="page-link"
-                                                   th:href="${boardList.first} ? '#' : @{/(page=${pageNumber})}">
+                                                   th:href="${boardList.first} ? '#' : @{board(page=${pageNumber}, category=${dto.category}, keyword=${dto.keyword})}">
                                                     <span aria-hidden="true">&lt;</span>
                                                 </a>
                                             </li>
@@ -73,12 +73,12 @@
                                             <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
                                                 th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
                                                 <a th:text="${page}" class="page-link"
-                                                   th:href="@{/(page=${page})}"></a>
+                                                   th:href="@{board(page=${page}, category=${dto.category}, keyword=${dto.keyword})}"></a>
                                             </li>
 
                                             <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
                                                 <a class="page-link"
-                                                   th:href="${boardList.last} ? '#' : @{/(page=${pageNumber + 2})}"
+                                                   th:href="${boardList.last} ? '#' : @{board(page=${pageNumber + 2}, category=${dto.category}, keyword=${dto.keyword})}"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">&gt;</span>
                                                 </a>
@@ -86,7 +86,7 @@
 
                                             <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
                                                 <a class="page-link"
-                                                   th:href="${boardList.last} ? '#' : @{/(page=${totalPages})}"
+                                                   th:href="${boardList.last} ? '#' : @{board(page=${totalPages}, category=${dto.category}, keyword=${dto.keyword})}"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">&gt;&gt;</span>
                                                 </a>
