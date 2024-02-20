@@ -2,6 +2,7 @@ package com.example.board.service.user;
 
 import com.example.board.repository.UserJoinReqDto;
 import com.example.board.repository.UserJoinResDto;
+import com.example.board.repository.UserModiReqDto;
 import com.example.board.repository.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +35,11 @@ public class UserServiceImpl implements UserService {
             return new UserJoinResDto(vo.getNickname(), vo.getRole(), "회원가입 성공");
         }
         return new UserJoinResDto("회원가입 실패");
+    }
+
+    @Override
+    public int modifyUser(UserModiReqDto reqDto) {
+        return userMapper.modifyUser(reqDto);
     }
 
     @Override

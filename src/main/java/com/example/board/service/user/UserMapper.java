@@ -1,6 +1,7 @@
 package com.example.board.service.user;
 
 import com.example.board.repository.UserJoinReqDto;
+import com.example.board.repository.UserModiReqDto;
 import com.example.board.repository.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -8,6 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
     public int join(UserJoinReqDto userJoinReqDTO);
+
+    public int modifyUser(UserModiReqDto reqDto);
 
     public UserVO findByLoginId(String loginId);
 

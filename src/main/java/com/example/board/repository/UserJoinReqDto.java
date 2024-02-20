@@ -19,7 +19,7 @@ public class UserJoinReqDto {
     @Size(min = 2, max = 10, message = "이름은 2~10자까지 입력하실 수 있습니다")
     private String name;
     @NotBlank(message = "닉네임은 필수 입력 항목입니다")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,13}$", message = "닉네임은 특수문자를 제외한 2~13자리여야 합니다.")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9]{2,13}$", message = "닉네임은 특수문자를 제외한 2~13자리여야 합니다")
     private String nickname;
     @Past(message = "과거 날짜만 입력하실 수 있습니다")
     private LocalDate birth;

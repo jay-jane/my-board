@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{layouts/default-layout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
@@ -23,7 +24,7 @@
                             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                                 <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                                <h2>*** 님</h2>
+                                <h2 th:text="${#authentication.principal.userVO.nickname} + ' 님'"></h2>
                             </div>
                         </div>
 
@@ -53,7 +54,7 @@
                                     <li class="nav-item">
                                         <button class="nav-link" data-bs-toggle="tab"
                                                 data-bs-target="#profile-settings">
-                                            회원 탈퇴
+                                            <span style="color: red;">회원 탈퇴</span>
                                         </button>
                                     </li>
 
@@ -84,41 +85,45 @@
                                                 <div class="col-md-8 col-lg-9">
                                                     <input name="fullName" type="text" class="form-control"
                                                            id="fullName"
-                                                           value="이름"
+                                                           th:value="${#authentication.principal.userVO.name}"
                                                            style="box-shadow: none; border: 0; outline: none;"
-                                                           readonly>
+                                                           readonly/>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Address"
-                                                       class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                                <label for="nickname"
+                                                       class="col-md-4 col-lg-3 col-form-label">Nickname</label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="address" type="text" class="form-control" id="Address"
-                                                           value="주소">
+                                                    <input name="nickname" type="text" class="form-control"
+                                                           id="nickname"
+                                                           th:value="${#authentication.principal.userVO.nickname}"
+                                                           th:onblur="checkNickname()"/>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Phone"
+                                                <label for="phone"
                                                        class="col-md-4 col-lg-3 col-form-label">Phone</label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="phone" type="text" class="form-control" id="Phone"
-                                                           value="010-0000-0000">
+                                                    <input name="phone" type="text" class="form-control" id="phone"
+                                                           th:value="${#authentication.principal.userVO.phone}"/>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="Email"
+                                                <label for="email"
                                                        class="col-md-4 col-lg-3 col-form-label">Email</label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="email" type="email" class="form-control" id="Email"
-                                                           value="g@g.com">
+                                                    <input name="email" type="text" class="form-control" id="email"
+                                                           th:value="${#authentication.principal.userVO.email}"
+                                                           style="box-shadow: none; border: 0; outline: none;"
+                                                           readonly/>
                                                 </div>
                                             </div>
 
                                             <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">수정</button>
+                                                <button type="button" class="btn btn-primary" th:onclick="modifyUser()">수정</button>
                                                 <button type="reset" class="btn btn-secondary">취소</button>
                                             </div>
                                         </form><!-- End Profile Edit Form -->
@@ -204,6 +209,93 @@
             </section>
         </main><!-- End #main -->
 
+        <script th:inline="javascript">
+            function checkNickname() {
+                const nickname = document.querySelector('#nickname');
+                const checkValid = /[ㄱ-ㅎ가-힣a-z0-9]/;
+                if (nickname.value != '' && nickname.value != [[${#authentication.principal.userVO.nickname}]]) {
+                    if (!checkValid.test(nickname.value)) {
+                        alert('닉네임은 특수문자를 제외한 2~13자로 설정해 주세요');
+                        nickname.value = '';
+                    } else if (nickname.value.length < 2 || nickname.value.length > 13) {
+                        alert('닉네임은 2~13자 사이로 설정해 주세요');
+                    } else {
+                        const request = new XMLHttpRequest();
+                        request.open('GET', 'http://localhost:8081/checkNickname?nickname=' + nickname.value, true);
+                        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        request.send();
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                if (request.response == 'true') {
+                                    alert('이미 존재하는 닉네임입니다. 다른 닉네임을 입력해 주세요');
+                                    nickname.style.borderColor = 'red';
+                                    nickname.value = '';
+                                } else {
+                                    nickname.style.borderColor = 'green';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function modifyUser() {
+                const data = {
+                    id: [[${ #authentication.principal.userVO.id }]],
+                    nickname: nickname.value,
+                    phone: phone.value.replace(/-/g, '')
+                }
+                if (confirm('수정하시겠습니까?')) {
+                    if (nickname.value == '') {
+                        alert('닉네임을 입력해 주세요');
+                    } else if (phone.value == '') {
+                        alert('연락처를 입력해 주세요');
+                    } else {
+                        const request = new XMLHttpRequest();
+                        request.open('POST', 'http://localhost:8081/modifyUser', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                if (request.response == 1) {
+                                    alert('수정되었습니다!');
+                                    window.location.replace('http://localhost:8081/board');
+                                } else {
+                                    alert('수정에 실패하였습니다. 다시 시도해 주세요');
+                                }
+                            } else if (request.status == 400) {
+                                const invalidTag = document.querySelectorAll('.invalid-feedback');
+                                const invalidNickname = document.querySelector('#invalid-nickname');
+                                const invalidPhone = document.querySelector('#invalid-phone');
+                                const errorResponse = JSON.parse(request.responseText);
+
+                                if (errorResponse.valid_nickname == null) {
+                                    errorResponse.valid_nickname = '';
+                                    invalidNickname.innerHTML = errorResponse.valid_nickname;
+                                } else {
+                                    invalidNickname.innerHTML = errorResponse.valid_nickname;
+                                }
+
+                                if (errorResponse.valid_phone == null) {
+                                    errorResponse.valid_phone = '';
+                                    invalidPhone.innerHTML = errorResponse.valid_phone;
+                                } else {
+                                    invalidPhone.innerHTML = errorResponse.valid_phone;
+                                }
+
+                                invalidTag.forEach(i => i.style.display = 'block');
+
+                                alert('양식에 맞지 않는 항목이 있습니다. 확인 후 다시 제출해 주세요');
+                            } else {
+                                alert('알 수 없는 오류로 실패하였습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
     </th:block>
 </th:block>
 

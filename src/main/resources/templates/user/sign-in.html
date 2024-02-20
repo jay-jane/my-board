@@ -269,7 +269,8 @@
             request.send(JSON.stringify(data));
             request.onload = () => {
                 if (request.status == 200) {
-                    if (request.response == 1) {
+                    const message = JSON.parse(request.response).message;
+                    if (message == '회원가입 성공') {
                         alert('회원가입이 완료되었습니다!');
                         window.location.replace('http://localhost:8081/login');
                     } else {
