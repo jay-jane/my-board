@@ -5,6 +5,9 @@ import com.example.board.repository.UserJoinResDto;
 import com.example.board.repository.UserModiReqDto;
 import com.example.board.repository.UserVO;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -21,16 +24,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
-    public UserJoinResDto join(UserJoinReqDto userJoinReqDTO) {
-        userJoinReqDTO.setRole("ROLE_MEMBER");
-        String rawPassword = userJoinReqDTO.getPassword();
+    public UserJoinResDto join(UserJoinReqDto userJoinReqDto) {
+        userJoinReqDto.setRole("ROLE_MEMBER");
+        String rawPassword = userJoinReqDto.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        userJoinReqDTO.setPassword(encPassword);
+        userJoinReqDto.setPassword(encPassword);
 
-        String id = userJoinReqDTO.getLoginId();
+        String id = userJoinReqDto.getLoginId();
 
-        if(userMapper.join(userJoinReqDTO) == 1) {
+        if (userMapper.join(userJoinReqDto) == 1) {
             UserVO vo = findByLoginId(id);
             return new UserJoinResDto(vo.getNickname(), vo.getRole(), "회원가입 성공");
         }
@@ -43,22 +48,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int modifyPassword(UserModiReqDto reqDto) {
+        String rawPassword = reqDto.getNewPassword();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        reqDto.setNewPassword(encPassword);
+        return userMapper.modifyPassword(reqDto);
+    }
+
+    @Override
+    public int deleteUser(UserModiReqDto reqDto) {
+        return userMapper.deleteUser(reqDto);
+    }
+
+    @Override
     public UserVO findByLoginId(String loginId) {
         return userMapper.findByLoginId(loginId);
     }
 
     @Override
     public boolean checkLoginId(String loginId) {
-        boolean result = false;
-        if (userMapper.findByLoginId(loginId) != null) {
-            result = true;
-        }
-        return result;
+        return userMapper.findByLoginId(loginId) != null;
     }
 
     @Override
     public boolean checkNickname(String nickname) {
         return userMapper.checkNickname(nickname);
+    }
+
+    @Override
+    public boolean checkPassword(String id, String password) {
+        String originalPassword = userMapper.checkPassword(id);
+        return BCrypt.checkpw(password, originalPassword);
     }
 
     @Override

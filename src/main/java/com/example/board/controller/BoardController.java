@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     private final BoardService boardService;
 

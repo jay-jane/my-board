@@ -123,7 +123,9 @@
                                             </div>
 
                                             <div class="text-center">
-                                                <button type="button" class="btn btn-primary" th:onclick="modifyUser()">수정</button>
+                                                <button type="button" class="btn btn-primary" th:onclick="modifyUser()">
+                                                    수정
+                                                </button>
                                                 <button type="reset" class="btn btn-secondary">취소</button>
                                             </div>
                                         </form><!-- End Profile Edit Form -->
@@ -134,13 +136,12 @@
 
                                         <!-- Change Password Form -->
                                         <form>
-
                                             <div class="row mb-3">
                                                 <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">
                                                     현재 비밀번호
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="password" type="password" class="form-control"
+                                                    <input name="currentPassword" type="password" class="form-control"
                                                            id="currentPassword">
                                                 </div>
                                             </div>
@@ -150,7 +151,7 @@
                                                     새 비밀번호
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="newpassword" type="password" class="form-control"
+                                                    <input name="newPassword" type="password" class="form-control"
                                                            id="newPassword">
                                                 </div>
                                             </div>
@@ -160,13 +161,15 @@
                                                     비밀번호 확인
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="renewpassword" type="password" class="form-control"
+                                                    <input name="renewPassword" type="password" class="form-control"
                                                            id="renewPassword">
                                                 </div>
                                             </div>
 
                                             <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">비밀번호 변경</button>
+                                                <button type="button" class="btn btn-primary"
+                                                        th:onclick="modifyPassword()">비밀번호 변경
+                                                </button>
                                             </div>
                                         </form><!-- End Change Password Form -->
 
@@ -177,27 +180,17 @@
                                         <form>
 
                                             <div class="row mb-3">
-                                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">
+                                                <label for="dropPassword" class="col-md-4 col-lg-3 col-form-label">
                                                     비밀번호
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
-                                                    <input name="newpassword" type="password" class="form-control"
+                                                    <input name="dropPassword" type="password" class="form-control"
                                                            id="dropPassword">
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-3">
-                                                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">
-                                                    비밀번호 확인
-                                                </label>
-                                                <div class="col-md-8 col-lg-9">
-                                                    <input name="renewpassword" type="password" class="form-control"
-                                                           id="reDropPassword">
-                                                </div>
-                                            </div>
-
                                             <div class="text-center">
-                                                <button type="submit" class="btn btn-danger">탈퇴하기</button>
+                                                <button type="button" class="btn btn-danger">탈퇴하기</button>
                                             </div>
                                         </form><!-- End Change Password Form -->
                                     </div>
@@ -243,7 +236,7 @@
         <script th:inline="javascript">
             function modifyUser() {
                 const data = {
-                    id: [[${ #authentication.principal.userVO.id }]],
+                    id: [[${#authentication.principal.userVO.id}]],
                     nickname: nickname.value,
                     phone: phone.value.replace(/-/g, '')
                 }
@@ -254,14 +247,14 @@
                         alert('연락처를 입력해 주세요');
                     } else {
                         const request = new XMLHttpRequest();
-                        request.open('POST', 'http://localhost:8081/modifyUser', true);
+                        request.open('PATCH', 'http://localhost:8081/modifyUser', true);
                         request.setRequestHeader('Content-type', 'application/json');
                         request.send(JSON.stringify(data));
                         request.onload = () => {
                             if (request.status == 200) {
                                 if (request.response == 1) {
-                                    alert('수정되었습니다!');
-                                    window.location.replace('http://localhost:8081/board');
+                                    alert('수정되었습니다. 다시 로그인해 주세요');
+                                    window.location.replace('http://localhost:8081/logout');
                                 } else {
                                     alert('수정에 실패하였습니다. 다시 시도해 주세요');
                                 }
@@ -292,6 +285,72 @@
                                 alert('알 수 없는 오류로 실패하였습니다. 다시 시도해 주세요');
                             }
                         }
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            const currentPassword = document.querySelector('#currentPassword');
+            const newPassword = document.querySelector('#newPassword');
+            const renewPassword = document.querySelector('#renewPassword');
+
+            function modifyPassword() {
+
+                if (confirm('비밀번호를 변경하시겠습니까?')) {
+
+                    if (currentPassword.value != null && currentPassword.value != '') {
+                        const data = {
+                            id: [[${#authentication.principal.userVO.id}]],
+                            password: currentPassword.value
+                        }
+
+                        const request = new XMLHttpRequest();
+                        console.log(data);
+                        request.open('POST', 'http://localhost:8081/checkPassword', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                console.log(request.response);
+                                if (request.response == 'true') {
+                                    if (newPassword.value == renewPassword.value && newPassword.value != '' && newPassword.value != null) {
+                                        const newPwData = {
+                                            id: [[${#authentication.principal.userVO.id}]],
+                                            password: currentPassword.value,
+                                            newPassword: newPassword.value
+                                        }
+                                        console.log(newPwData);
+                                        request.open('PATCH', 'http://localhost:8081/modifyPassword', true);
+                                        request.setRequestHeader('Content-type', 'application/json');
+                                        request.send(JSON.stringify(newPwData));
+                                        request.onload = () => {
+                                            if (request.status == 200) {
+                                                alert('비밀번호 변경이 완료되었습니다. 다시 로그인해 주세요!');
+                                                window.location.replace('http://localhost:8081/logout');
+                                            } else if (request.status == 400) {
+                                                if (errorResponse.valid_password == null) {
+                                                    errorResponse.valid_password = '';
+                                                    invalidPassword.innerHTML = errorResponse.valid_password;
+                                                } else {
+                                                    invalidPassword.innerHTML = errorResponse.valid_password;
+                                                }
+                                            } else {
+                                                alert('작업 도중 오류가 발생했습니다. 다시 시도해 주세요');
+                                            }
+                                        }
+                                    } else {
+                                        alert('변경하려는 비밀번호가 일치하지 않습니다. 다시 확인해 주세요');
+                                    }
+                                } else {
+                                    alert('현재 비밀번호가 틀립니다. 다시 확인해 주세요');
+                                }
+                            } else {
+                                alert('작업 도중 오류가 발생했습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    } else {
+                        alert('현재 비밀번호를 입력해 주세요');
                     }
                 }
             }

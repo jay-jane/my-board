@@ -9,6 +9,7 @@ import com.example.board.repository.UserJoinReqDto;
 import com.example.board.repository.UserVO;
 import com.example.board.service.user.UserService;
 import com.example.board.util.Namer;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,14 @@ import org.springframework.stereotype.Service;
 
 //해당 메서드 종료 시 @AuthenticationPrincipal 어노테이션이 생성됨
 @Service
+@RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PrincipalOauth2UserService.class);
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     private OAuth2UserInfo oAuth2UserInfo;
 

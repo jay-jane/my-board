@@ -73,9 +73,10 @@
                                                 style="color: red;">*</span></label>
                                         <div class="input-group has-validation">
                                             <input type="text" name="login-id" class="form-control" id="login-id"
-                                                   required />
+                                                   required/>
                                             <button type="button" class="btn btn-primary" id="checkButton"
-                                                    onclick="checkLoginId()">중복 확인</button>
+                                                    onclick="checkLoginId()">중복 확인
+                                            </button>
                                             <div class="invalid-feedback" id="invalid-login-id"></div>
                                         </div>
                                     </div>
@@ -84,14 +85,14 @@
                                         <label for="password" class="form-label">비밀번호<span
                                                 style="color: red;">*</span></label>
                                         <input type="password" name="password" class="form-control" id="password"
-                                               onkeyup="checkPw()" required />
+                                               onkeyup="checkPw()" required/>
                                         <div class="invalid-feedback" id="invalid-password"></div>
                                     </div>
                                     <div class="col-12">
                                         <label for="check-password" class="form-label">비밀번호 확인<span
                                                 style="color: red;">*</span></label>
                                         <input type="password" name="check-password" class="form-control"
-                                               id="check-password" onkeyup="checkPw()" required />
+                                               id="check-password" onkeyup="checkPw()" required/>
                                         <div class="invalid-feedback" id="invalid-check-pw"></div>
                                     </div>
 
@@ -99,7 +100,7 @@
                                         <label for="nickname" class="form-label">닉네임<span
                                                 style="color: red;">*</span></label>
                                         <input type="text" name="nickname" class="form-control" id="nickname"
-                                               onblur="checkNickname()" required />
+                                               onblur="checkNickname()" required/>
                                         <div class="invalid-feedback" id="invalid-nickname"></div>
                                     </div>
 
@@ -112,28 +113,30 @@
 
                                     <div class="col-12">
                                         <label for="birth" class="form-label">생년월일</label>
-                                        <input type="date" name="birth" class="form-control" id="birth" required />
+                                        <input type="date" name="birth" class="form-control" id="birth" required/>
                                         <div class="invalid-feedback" id="invalid-birth"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="email" class="form-label">이메일</label>
-                                        <input type="email" name="email" class="form-control" id="email" />
+                                        <input type="email" name="email" class="form-control" id="email"/>
                                         <div class="invalid-feedback" id="invalid-email"></div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="phone" class="form-label">연락처</label>
-                                        <input type="tel" name="phone" class="form-control" id="phone" required />
+                                        <label for="phone" class="form-label">연락처<span
+                                                style="color: red;">*</span></label>
+                                        <input type="tel" name="phone" class="form-control" id="phone" required/>
                                         <div class="invalid-feedback" id="invalid-phone"></div>
                                     </div>
 
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="button"
-                                                onclick="submitJoin()">완료</button>
+                                                onclick="submitJoin()">완료
+                                        </button>
                                     </div>
                                     <div class="col-12">
-                                        <p class="small mb-0">계정이 이미 있으신가요? <a href="/login"><b />로그인</a></p>
+                                        <p class="small mb-0">계정이 이미 있으신가요? <a href="/login"><b/>로그인</a></p>
                                     </div>
                                 </form>
 

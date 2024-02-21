@@ -18,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -26,16 +26,32 @@ public class UserController {
     public ResponseEntity<?> signInForm(@Valid @RequestBody UserJoinReqDto userJoinReqDTO, BindingResult bindingResult) {
         Map<String, String> result = userService.validateHandling(bindingResult);
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.join(userJoinReqDTO));
     }
 
-    @PostMapping("/modifyUser") //회원정보수정
+    @PatchMapping("/modifyUser") //회원정보수정
     public int modifyUser(@RequestBody UserModiReqDto reqDto) {
         return userService.modifyUser(reqDto);
+    }
+
+    @PatchMapping("/modifyPassword")
+    public int modifyPassword(@RequestBody UserModiReqDto reqDto) {
+        if(checkPassword(reqDto)) {
+            return userService.modifyPassword(reqDto);
+        }
+        return 0;
+    }
+
+    @DeleteMapping("/deleteUser") //회원탈퇴
+    public int deleteUser(@RequestBody UserModiReqDto reqDto) {
+        if(checkPassword(reqDto)) {
+            return userService.deleteUser(reqDto);
+        }
+        return 0;
     }
 
     @GetMapping("/checkLoginId")
@@ -46,5 +62,10 @@ public class UserController {
     @GetMapping("/checkNickname")
     public boolean checkNickname(@RequestParam(value = "nickname", required = false) String nickname) {
         return userService.checkNickname(nickname);
+    }
+
+    @PostMapping("/checkPassword")
+    public boolean checkPassword(@RequestBody UserModiReqDto reqDto) {
+        return userService.checkPassword(reqDto.getId(), reqDto.getPassword());
     }
 }

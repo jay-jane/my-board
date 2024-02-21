@@ -14,11 +14,17 @@ public interface UserService {
 
     public int modifyUser(UserModiReqDto reqDto);
 
+    public int modifyPassword(UserModiReqDto reqDto);
+
+    public int deleteUser(UserModiReqDto reqDto);
+
     public UserVO findByLoginId(String loginId);
 
     public boolean checkLoginId(String loginId);
 
     public boolean checkNickname(String nickname);
+
+    public boolean checkPassword(String id, String newPassword);
 
     public Map<String, String> validateHandling(Errors errors);
 }
