@@ -16,7 +16,7 @@ public interface UserService {
 
     public int modifyPassword(UserModiReqDto reqDto);
 
-    public int deleteUser(UserModiReqDto reqDto);
+    public int deleteUser(String id);
 
     public UserVO findByLoginId(String loginId);
 

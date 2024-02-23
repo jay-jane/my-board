@@ -14,7 +14,7 @@ public interface UserMapper {
 
     public int modifyPassword(UserModiReqDto reqDto);
 
-    public int deleteUser(UserModiReqDto reqDto);
+    public int deleteUser(String id);
 
     public UserVO findByLoginId(String loginId);
 

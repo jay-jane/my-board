@@ -34,22 +34,33 @@ public class UserController {
     }
 
     @PatchMapping("/modifyUser") //회원정보수정
-    public int modifyUser(@RequestBody UserModiReqDto reqDto) {
-        return userService.modifyUser(reqDto);
+    public ResponseEntity<?> modifyUser(@Valid @RequestBody UserModiReqDto reqDto, BindingResult bindingResult) {
+        Map<String, String> result = userService.validateHandling(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.modifyUser(reqDto));
     }
 
     @PatchMapping("/modifyPassword")
-    public int modifyPassword(@RequestBody UserModiReqDto reqDto) {
-        if(checkPassword(reqDto)) {
-            return userService.modifyPassword(reqDto);
+    public ResponseEntity<?> modifyPassword(@Valid @RequestBody UserModiReqDto reqDto, BindingResult bindingResult) {
+        Map<String, String> result = userService.validateHandling(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        } else {
+            if (checkPassword(reqDto)) {
+                return ResponseEntity.status(HttpStatus.OK).body(userService.modifyPassword(reqDto));
+            }
         }
-        return 0;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
     }
 
     @DeleteMapping("/deleteUser") //회원탈퇴
     public int deleteUser(@RequestBody UserModiReqDto reqDto) {
-        if(checkPassword(reqDto)) {
-            return userService.deleteUser(reqDto);
+        if (checkPassword(reqDto)) {
+            return userService.deleteUser(reqDto.getId());
         }
         return 0;
     }

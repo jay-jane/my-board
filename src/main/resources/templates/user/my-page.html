@@ -99,7 +99,9 @@
                                                            id="nickname"
                                                            th:value="${#authentication.principal.userVO.nickname}"
                                                            th:onblur="checkNickname()"/>
+                                                    <div class="invalid-feedback" id="invalid-nickname"></div>
                                                 </div>
+
                                             </div>
 
                                             <div class="row mb-3">
@@ -108,6 +110,7 @@
                                                 <div class="col-md-8 col-lg-9">
                                                     <input name="phone" type="text" class="form-control" id="phone"
                                                            th:value="${#authentication.principal.userVO.phone}"/>
+                                                    <div class="invalid-feedback" id="invalid-phone"></div>
                                                 </div>
                                             </div>
 
@@ -152,7 +155,8 @@
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
                                                     <input name="newPassword" type="password" class="form-control"
-                                                           id="newPassword">
+                                                           id="newPassword"/>
+                                                    <div class="invalid-feedback" id="invalid-password"></div>
                                                 </div>
                                             </div>
 
@@ -162,7 +166,8 @@
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
                                                     <input name="renewPassword" type="password" class="form-control"
-                                                           id="renewPassword">
+                                                           id="renewPassword" onkeyup="checkPw()"/>
+                                                    <div class="invalid-feedback" id="invalid-check-pw"></div>
                                                 </div>
                                             </div>
 
@@ -185,12 +190,12 @@
                                                 </label>
                                                 <div class="col-md-8 col-lg-9">
                                                     <input name="dropPassword" type="password" class="form-control"
-                                                           id="dropPassword">
+                                                           id="dropPassword"/>
                                                 </div>
                                             </div>
 
                                             <div class="text-center">
-                                                <button type="button" class="btn btn-danger">탈퇴하기</button>
+                                                <button type="button" class="btn btn-danger" th:onclick="deleteUser()">탈퇴하기</button>
                                             </div>
                                         </form><!-- End Change Password Form -->
                                     </div>
@@ -306,13 +311,11 @@
                         }
 
                         const request = new XMLHttpRequest();
-                        console.log(data);
                         request.open('POST', 'http://localhost:8081/checkPassword', true);
                         request.setRequestHeader('Content-type', 'application/json');
                         request.send(JSON.stringify(data));
                         request.onload = () => {
                             if (request.status == 200) {
-                                console.log(request.response);
                                 if (request.response == 'true') {
                                     if (newPassword.value == renewPassword.value && newPassword.value != '' && newPassword.value != null) {
                                         const newPwData = {
@@ -320,7 +323,6 @@
                                             password: currentPassword.value,
                                             newPassword: newPassword.value
                                         }
-                                        console.log(newPwData);
                                         request.open('PATCH', 'http://localhost:8081/modifyPassword', true);
                                         request.setRequestHeader('Content-type', 'application/json');
                                         request.send(JSON.stringify(newPwData));
@@ -329,12 +331,19 @@
                                                 alert('비밀번호 변경이 완료되었습니다. 다시 로그인해 주세요!');
                                                 window.location.replace('http://localhost:8081/logout');
                                             } else if (request.status == 400) {
-                                                if (errorResponse.valid_password == null) {
-                                                    errorResponse.valid_password = '';
-                                                    invalidPassword.innerHTML = errorResponse.valid_password;
+                                                console.log(request.response);
+                                                const invalidTag = document.querySelectorAll('.invalid-feedback');
+                                                const invalidPassword = document.querySelector('#invalid-password');
+                                                const errorResponse = JSON.parse(request.responseText);
+
+                                                if (errorResponse.valid_newPassword == null) {
+                                                    errorResponse.valid_newPassword = '';
+                                                    invalidPassword.innerHTML = errorResponse.valid_newPassword;
                                                 } else {
-                                                    invalidPassword.innerHTML = errorResponse.valid_password;
+                                                    invalidPassword.innerHTML = errorResponse.valid_newPassword;
                                                 }
+                                                invalidTag.forEach(i => i.style.display = 'block');
+                                                alert('양식에 맞지 않는 항목이 있습니다. 다시 확인해 주세요');
                                             } else {
                                                 alert('작업 도중 오류가 발생했습니다. 다시 시도해 주세요');
                                             }
@@ -354,6 +363,58 @@
                     }
                 }
             }
+        </script>
+
+        <script th:inline="javascript">
+            function deleteUser() {
+                const dropPassword = document.querySelector('#dropPassword');
+                const data = {
+                    id: [[${#authentication.principal.userVO.id}]],
+                    password: dropPassword.value
+                }
+
+                if(confirm('탈퇴하시면 게시글, 댓글을 제외한 모든 회원 정보가 삭제됩니다.\n정말 탈퇴하시겠습니까?')) {
+                    const request = new XMLHttpRequest();
+                    request.open('DELETE', 'http://localhost:8081/deleteUser', true);
+                    request.setRequestHeader('Content-type', 'application/json');
+                    request.send(JSON.stringify(data));
+                    request.onload = () => {
+                        if (request.status == 200) {
+                            if(request.response == 1) {
+                                alert('회원 탈퇴가 완료되었습니다');
+                                window.location.replace('http://localhost:8081/logout');
+                            } else {
+                                alert('비밀번호가 틀립니다. 다시 확인해 주세요');
+                            }
+                        } else {
+                            console.log(request.response);
+                        }
+                    }
+                }
+
+            }
+        </script>
+
+        <script>
+            function checkPw() {
+
+            const newPassword = document.querySelector('#newPassword');
+            const renewPassword = document.querySelector('#renewPassword');
+            const invalidPassword = document.querySelector('#invalid-password');
+            const checkPwValid = document.querySelector('#invalid-check-pw');
+            if (newPassword.value == renewPassword.value) {
+                newPassword.style.borderColor = 'green';
+                renewPassword.style.borderColor = 'green';
+                checkPwValid.style.display = 'none';
+                invalidPassword.innerHTML = '';
+                checkPwValid.innerHTML = '';
+            } else {
+                newPassword.style.borderColor = 'red';
+                renewPassword.style.borderColor = 'red';
+                checkPwValid.style.display = 'block';
+                checkPwValid.innerHTML = '비밀번호가 일치하지 않습니다';
+            }
+        }
         </script>
     </th:block>
 </th:block>

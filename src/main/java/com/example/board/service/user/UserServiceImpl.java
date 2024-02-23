@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(UserModiReqDto reqDto) {
-        return userMapper.deleteUser(reqDto);
+    public int deleteUser(String id) {
+        return userMapper.deleteUser(id);
     }
 
     @Override
