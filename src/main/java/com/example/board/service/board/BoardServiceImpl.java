@@ -2,6 +2,7 @@ package com.example.board.service.board;
 
 import com.example.board.repository.BoardCountReqDto;
 import com.example.board.repository.BoardListResDto;
+import com.example.board.repository.BoardModiReqDto;
 import com.example.board.repository.BoardRegistReqDto;
 import com.example.board.util.RequestList;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,18 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     @Override
-    public int registPost(BoardRegistReqDto boardRegistReqDTO) {
-        return boardMapper.registPost(boardRegistReqDTO);
+    public int registPost(BoardRegistReqDto boardRegistReqDto) {
+        return boardMapper.registPost(boardRegistReqDto);
+    }
+
+    @Override
+    public int modifyPost(BoardModiReqDto reqDto) {
+        return boardMapper.modifyPost(reqDto);
+    }
+
+    @Override
+    public int deletePost(String boardId) {
+        return boardMapper.deletePost(boardId);
     }
 
     @Override

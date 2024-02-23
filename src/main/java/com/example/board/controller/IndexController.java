@@ -27,7 +27,7 @@ public class IndexController {
     private final BoardService boardService;
 
     @GetMapping(value = {"/", "/board"}) //일반, OAuth 로그인 모두 PrincipalDetails에 정보를 담을 수 있음
-    public String mainPage(BoardCountReqDto dto, Pageable pageable, Model model) {
+    public String boardMain(BoardCountReqDto dto, Pageable pageable, Model model) {
         Page<Map<String, Object>> boardList = boardService.getBoardList(dto, pageable);
         model.addAttribute("boardList", boardList);
         model.addAttribute("dto", dto);
@@ -63,5 +63,11 @@ public class IndexController {
     public String boardView(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
         model.addAttribute("detail", boardService.getBoardDetail(boardId));
         return "/board/board-view";
+    }
+
+    @GetMapping("/board/modify/{boardId}")
+    public String boardModify(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
+        model.addAttribute("detail", boardService.getBoardDetail(boardId));
+        return "/board/board-modi";
     }
 }

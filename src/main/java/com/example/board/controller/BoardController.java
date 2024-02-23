@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.repository.BoardCountReqDto;
 import com.example.board.repository.BoardListResDto;
+import com.example.board.repository.BoardModiReqDto;
 import com.example.board.repository.BoardRegistReqDto;
 import com.example.board.service.board.BoardMapper;
 import com.example.board.service.board.BoardService;
@@ -26,8 +27,18 @@ public class BoardController {
     private final BoardMapper boardMapper;
 
     @PostMapping("/registPost")
-    public int registPost(@RequestBody BoardRegistReqDto boardRegistReqDTO) {
-        return boardService.registPost(boardRegistReqDTO);
+    public int registPost(@RequestBody BoardRegistReqDto boardRegistReqDto) {
+        return boardService.registPost(boardRegistReqDto);
+    }
+
+    @PatchMapping("/modifyPost")
+    public int modifyPost(@RequestBody BoardModiReqDto reqDto) {
+        return boardService.modifyPost(reqDto);
+    }
+
+    @PatchMapping("/deletePost")
+    public int deletePost(@RequestBody String boardId) {
+        return boardService.deletePost(boardId);
     }
 
     @GetMapping("/getBoardDetail")
