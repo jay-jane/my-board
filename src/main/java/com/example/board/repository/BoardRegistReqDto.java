@@ -7,12 +7,14 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class BoardRegistReqDTO {
+public class BoardRegistReqDto {
     private String title;
     private String content;
+    private String memberId;
 
-    public BoardRegistReqDTO(String title, String content) {
+    public BoardRegistReqDto(String title, String content, String memberId) {
         this.title = title;
         this.content = content;
+        this.memberId = memberId;
     }
 }

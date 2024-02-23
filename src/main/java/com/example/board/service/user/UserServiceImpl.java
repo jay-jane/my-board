@@ -1,10 +1,13 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.UserJoinReqDTO;
+import com.example.board.repository.UserJoinReqDto;
+import com.example.board.repository.UserJoinResDto;
+import com.example.board.repository.UserModiReqDto;
 import com.example.board.repository.UserVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -21,13 +24,40 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
-    public int join(UserJoinReqDTO userJoinReqDTO) {
-        userJoinReqDTO.setRole("ROLE_MEMBER");
-        String rawPassword = userJoinReqDTO.getPassword();
+    public UserJoinResDto join(UserJoinReqDto userJoinReqDto) {
+        userJoinReqDto.setRole("ROLE_MEMBER");
+        String rawPassword = userJoinReqDto.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        userJoinReqDTO.setPassword(encPassword);
-        return userMapper.join(userJoinReqDTO);
+        userJoinReqDto.setPassword(encPassword);
+
+        String id = userJoinReqDto.getLoginId();
+
+        if (userMapper.join(userJoinReqDto) == 1) {
+            UserVO vo = findByLoginId(id);
+            return new UserJoinResDto(vo.getNickname(), vo.getRole(), "회원가입 성공");
+        }
+        return new UserJoinResDto("회원가입 실패");
+    }
+
+    @Override
+    public int modifyUser(UserModiReqDto reqDto) {
+        return userMapper.modifyUser(reqDto);
+    }
+
+    @Override
+    public int modifyPassword(UserModiReqDto reqDto) {
+        String rawPassword = reqDto.getNewPassword();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        reqDto.setNewPassword(encPassword);
+        return userMapper.modifyPassword(reqDto);
+    }
+
+    @Override
+    public int deleteUser(String id) {
+        return userMapper.deleteUser(id);
     }
 
     @Override
@@ -37,16 +67,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkLoginId(String loginId) {
-        boolean result = false;
-        if (userMapper.findByLoginId(loginId) != null) {
-            result = true;
-        }
-        return result;
+        return userMapper.findByLoginId(loginId) != null;
     }
 
     @Override
     public boolean checkNickname(String nickname) {
         return userMapper.checkNickname(nickname);
+    }
+
+    @Override
+    public boolean checkPassword(String id, String password) {
+        String originalPassword = userMapper.checkPassword(id);
+        return BCrypt.checkpw(password, originalPassword);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.example.board.controller;
 
-import com.example.board.repository.UserJoinReqDTO;
-import com.example.board.repository.UserResDTO;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.UserJoinReqDto;
+import com.example.board.repository.UserModiReqDto;
 import com.example.board.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,19 +18,51 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
     @PostMapping("/signinForm") //회원가입
-    public ResponseEntity<?> signInForm(@Valid @RequestBody UserJoinReqDTO userJoinReqDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> signInForm(@Valid @RequestBody UserJoinReqDto userJoinReqDTO, BindingResult bindingResult) {
         Map<String, String> result = userService.validateHandling(bindingResult);
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.join(userJoinReqDTO));
+    }
+
+    @PatchMapping("/modifyUser") //회원정보수정
+    public ResponseEntity<?> modifyUser(@Valid @RequestBody UserModiReqDto reqDto, BindingResult bindingResult) {
+        Map<String, String> result = userService.validateHandling(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.modifyUser(reqDto));
+    }
+
+    @PatchMapping("/modifyPassword")
+    public ResponseEntity<?> modifyPassword(@Valid @RequestBody UserModiReqDto reqDto, BindingResult bindingResult) {
+        Map<String, String> result = userService.validateHandling(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        } else {
+            if (checkPassword(reqDto)) {
+                return ResponseEntity.status(HttpStatus.OK).body(userService.modifyPassword(reqDto));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
+    }
+
+    @DeleteMapping("/deleteUser") //회원탈퇴
+    public int deleteUser(@RequestBody UserModiReqDto reqDto) {
+        if (checkPassword(reqDto)) {
+            return userService.deleteUser(reqDto.getId());
+        }
+        return 0;
     }
 
     @GetMapping("/checkLoginId")
@@ -42,5 +73,10 @@ public class UserController {
     @GetMapping("/checkNickname")
     public boolean checkNickname(@RequestParam(value = "nickname", required = false) String nickname) {
         return userService.checkNickname(nickname);
+    }
+
+    @PostMapping("/checkPassword")
+    public boolean checkPassword(@RequestBody UserModiReqDto reqDto) {
+        return userService.checkPassword(reqDto.getId(), reqDto.getPassword());
     }
 }

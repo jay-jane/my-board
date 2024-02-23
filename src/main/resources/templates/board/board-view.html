@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{layouts/default-layout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <main id="main" class="main">
+
+            <div class="pagetitle">
+                <h1>INFO</h1>
+            </div><!-- End Page Title -->
+
+            <section class="section">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- 글 섹션 -->
+                                <div class="container">
+                                    <!-- 글 제목 -->
+                                    <h5 class="card-title" th:text="${detail.title}">글 제목</h5>
+                                    <hr/>
+
+                                    <!-- 글 작성자, 게시 날짜, 조회수 -->
+                                    <p class="card-subtitle text-muted mb-2">
+                                        <b><span th:text="${detail.nickname}">nickname</span></b>
+                                        <span style="border-left: 1px solid darkgrey; padding-right: 5px;"></span>
+                                        <span th:text="${#temporals.format(detail.regDate, 'yyyy.MM.dd HH:mm')}">datetime</span>
+                                        <br/>
+                                        조회 : <span th:text="${detail.views}">view</span>
+                                    </p>
+                                    <hr/>
+
+                                    <!-- 글 내용 -->
+                                    <div class="card-text" th:utext="${detail.content}"></div>
+                                    <hr/>
+
+                                    <!-- 글 추천수 -->
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="text-muted">
+                                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                                <span th:text="${detail.like}"></span>
+                                                <span>0</span><br/>
+                                                추천
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+
+                                <!-- 댓글 섹션 -->
+                                <div class="container mt-4">
+                                    <h6 class="card-subtitle mb-2 text-muted">댓글</h6>
+
+                                    <!-- 각 댓글은 아래와 같은 형식으로 표시됩니다. -->
+                                    <div class="media mb-3">
+                                        <img src="" class="mr-3 rounded-circle" alt="User Avatar"
+                                             style="width: 48px; height: 48px;">
+                                        <div class="media-body">
+                                            <h6 class="mt-0">댓글 작성자</h6>
+                                            <p>댓글 내용이 여기에 들어갑니다.</p>
+                                            <small class="text-muted">댓글 작성 날짜</small>
+                                            <button type="button" class="btn btn-sm btn-danger">삭제</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- 추가 댓글은 위와 같은 형식으로 계속 추가 가능 -->
+
+                                    <!-- 댓글 쓰기 폼 -->
+                                    <form>
+                                        <div class="mb-3">
+                                            <img src="" class="rounded-circle" alt="User Avatar"
+                                                 style="width: 32px; height: 32px;">
+                                            <textarea class="form-control" placeholder="댓글을 입력하세요" rows="2"></textarea>
+                                            <button type="submit" class="btn btn-primary mt-2">작성</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="btn btn-secondary" onclick="location.href='#'">수정</button>
+                            <button class="btn btn-secondary" onclick="location.href='#'">삭제</button>
+                            <button class="btn btn-secondary" onclick="location.href='/board'">전체글</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main><!-- End #main -->
+
+    </th:block>
+</th:block>
+
+</html>

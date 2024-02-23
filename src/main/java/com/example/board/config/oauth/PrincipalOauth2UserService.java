@@ -5,10 +5,11 @@ import com.example.board.config.oauth.provider.GoogleUserInfo;
 import com.example.board.config.oauth.provider.KakaoUserInfo;
 import com.example.board.config.oauth.provider.OAuth2UserInfo;
 import com.example.board.controller.IndexController;
-import com.example.board.repository.UserJoinReqDTO;
+import com.example.board.repository.UserJoinReqDto;
 import com.example.board.repository.UserVO;
 import com.example.board.service.user.UserService;
 import com.example.board.util.Namer;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,14 @@ import org.springframework.stereotype.Service;
 
 //해당 메서드 종료 시 @AuthenticationPrincipal 어노테이션이 생성됨
 @Service
+@RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PrincipalOauth2UserService.class);
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     private OAuth2UserInfo oAuth2UserInfo;
 
@@ -64,7 +64,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         //login_id, password, name, nickname, birth, phone, email, provider, provider_id, role
         if (userEntity == null) {
             logger.info("최초 로그인, 자동 회원가입 진행");
-            UserJoinReqDTO userJoinReqDTO = new UserJoinReqDTO();
+            UserJoinReqDto userJoinReqDTO = new UserJoinReqDto();
             Namer namer = new Namer();
             userJoinReqDTO.setLoginId(loginId);
             userJoinReqDTO.setPassword(password);
@@ -73,7 +73,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             userJoinReqDTO.setEmail(email);
             userJoinReqDTO.setRole(role);
             userJoinReqDTO.setProvider(provider);
-            userJoinReqDTO.setProvider_id(providerId);
+            userJoinReqDTO.setProviderId(providerId);
             userService.join(userJoinReqDTO);
             userEntity = userService.findByLoginId(loginId);
         } else {

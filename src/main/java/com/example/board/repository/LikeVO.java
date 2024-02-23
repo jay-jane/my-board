@@ -1,13 +1,12 @@
 package com.example.board.repository;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class HeartVO {
+public class LikeVO {
     private long id;
-    private long member_id;
-    private long board_id;
+    private long memberId;
+    private long boardId;
 }

@@ -9,9 +9,25 @@
         select count(*) from user where nickname = #{nickname}
     </select>
 
-    <insert id="join" parameterType="UserJoinReqDTO">
+    <select id="checkPassword" resultType="String">
+        select password from user where id = #{id}
+    </select>
+
+    <insert id="join" parameterType="UserJoinReqDto">
         insert into user(login_id, password, name, nickname, birth, phone, email, provider, provider_id, role)
-        values(#{loginId}, #{password}, #{name}, #{nickname}, #{birth}, #{phone}, #{email}, #{provider}, #{provider_id},
+        values(#{loginId}, #{password}, #{name}, #{nickname}, #{birth}, #{phone}, #{email}, #{provider}, #{providerId},
         #{role})
     </insert>
+
+    <update id="modifyUser" parameterType="UserModiReqDto">
+        update user set nickname = #{nickname}, phone = #{phone} where id = #{id}
+    </update>
+
+    <update id="modifyPassword" parameterType="UserModiReqDto">
+        update user set password = #{newPassword} where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="String">
+        delete from user where id = #{id}
+    </delete>
 </mapper>
