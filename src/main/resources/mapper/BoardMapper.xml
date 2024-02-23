@@ -15,7 +15,7 @@
     </select>
 
     <select id="getBoardList" parameterType="RequestList" resultType="BoardListResDto">
-        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.is_deleted
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.is_deleted,
         u.id, u.nickname
         from board b
         left join user u on b.member_id = u.id
@@ -54,10 +54,14 @@
     </select>
 
     <update id="modifyPost" parameterType="BoardModiReqDto">
-        update board set title = #{title}, content = #{content}, modDate = now() where id = #{id}
+        update board
+        set title = #{title}, content = #{content}, mod_date = now()
+        where id = #{id}
     </update>
 
     <update id="deletePost" parameterType="String">
-        update board set is_deleted = true where id = #{boardId}
+        update board
+        set is_deleted = true
+        where id = #{boardId}
     </update>
 </mapper>

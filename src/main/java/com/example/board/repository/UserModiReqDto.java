@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Data
 public class UserModiReqDto {
     private String id;
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9]{2,13}$", message = "닉네임은 특수문자를 제외한 2~13자리여야 합니다")

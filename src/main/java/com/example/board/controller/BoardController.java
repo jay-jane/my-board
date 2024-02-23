@@ -37,8 +37,8 @@ public class BoardController {
     }
 
     @PatchMapping("/deletePost")
-    public int deletePost(@RequestBody String boardId) {
-        return boardService.deletePost(boardId);
+    public int deletePost(@RequestBody BoardModiReqDto reqDto) {
+        return boardService.deletePost(reqDto.getId());
     }
 
     @GetMapping("/getBoardDetail")
