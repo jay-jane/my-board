@@ -80,7 +80,7 @@ public class IndexController {
 
     @GetMapping("/board/modify/{boardId}")
     public String boardModify(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
-        model.addAttribute("detail", boardService.getBoardDetail(boardId));
+        model.addAttribute("detail", boardService.getBoardDetail(boardId).getBody());
         return "/board/board-modi";
     }
 }
