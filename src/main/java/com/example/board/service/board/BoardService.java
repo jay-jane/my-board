@@ -6,6 +6,7 @@ import com.example.board.repository.BoardModiReqDto;
 import com.example.board.repository.BoardRegistReqDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface BoardService {
 
     int deletePost(String boardId);
 
-    BoardListResDto getBoardDetail(String boardId);
+    ResponseEntity<?> getBoardDetail(String boardId);
 
     Page<Map<String, Object>> getBoardList(BoardCountReqDto dto, Pageable pageable);
 }

@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getBoardDetail" resultType="BoardListResDto">
-        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views,
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.member_id, b.is_deleted,
         u.id, u.nickname
         from board b
         left join user u on b.member_id = u.id
@@ -19,7 +19,7 @@
         u.id, u.nickname
         from board b
         left join user u on b.member_id = u.id
-        where 1 = 1
+        where b.is_deleted = false
         <if test="data.keyword != null and data.keyword != ''">
             <if test="data.category == 'title'">
                 and b.title like concat('%',#{data.keyword},'%')
@@ -39,7 +39,7 @@
         select count(*)
         from board b
         left join user u on b.member_id = u.id
-        where 1 = 1
+        where b.is_deleted = false
         <if test="keyword != null and keyword != ''">
             <if test="category == 'title'">
                 and b.title like concat('%', #{keyword}, '%')
@@ -56,7 +56,7 @@
     <update id="modifyPost" parameterType="BoardModiReqDto">
         update board
         set title = #{title}, content = #{content}, mod_date = now()
-        where id = #{id}
+        where id = #{id} and is_deleted = false
     </update>
 
     <update id="deletePost" parameterType="String">
