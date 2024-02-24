@@ -1,5 +1,6 @@
 package com.example.board.repository;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class BoardListResDto {
     private long views;
     private boolean isDeleted;
 
+    private String memberId;
     private String nickname;
     private String like;
 }

@@ -3,12 +3,13 @@ package com.example.board.controller;
 import com.example.board.config.auth.PrincipalDetails;
 import com.example.board.repository.BoardCountReqDto;
 import com.example.board.service.board.BoardService;
-import com.example.board.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,8 +61,20 @@ public class IndexController {
     }
 
     @GetMapping("/board/view/{boardId}")
-    public String boardView(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
-        model.addAttribute("detail", boardService.getBoardDetail(boardId));
+    public String boardView(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                            @PathVariable(value = "boardId", required = false) String boardId,
+                            Model model) {
+
+        ResponseEntity<?> result = boardService.getBoardDetail(boardId);
+        if(result.getStatusCode() == HttpStatusCode.valueOf(404)) {
+            model.addAttribute("message", result.getBody());
+            return "/errors/board-404";
+        }
+
+        model.addAttribute("detail", result.getBody());
+        if (principalDetails != null) {
+            model.addAttribute("memberId", principalDetails.getUserVO().getId());
+        }
         return "/board/board-view";
     }
 

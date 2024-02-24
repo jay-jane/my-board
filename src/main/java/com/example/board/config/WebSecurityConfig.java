@@ -43,6 +43,7 @@ public class WebSecurityConfig {
         http.authorizeRequests()
                 .requestMatchers("/board/write").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_MANAGER')")
                 .requestMatchers("/mypage").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_MANAGER')")
+                .requestMatchers("/board/modify/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_MANAGER')")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

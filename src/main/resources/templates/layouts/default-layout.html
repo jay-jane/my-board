@@ -239,7 +239,7 @@
                             <hr class="dropdown-divider">
                         </li>
 
-                        <li>
+                        <li sec:authorize="isAuthenticated()">
                             <a class="dropdown-item d-flex align-items-center" href="/mypage">
                                 <i class="bi bi-person"></i>
                                 <span>내 정보</span>
@@ -249,10 +249,24 @@
                             <hr class="dropdown-divider">
                         </li>
 
-                        <li>
+                        <li sec:authorize="isAuthenticated()">
                             <a class="dropdown-item d-flex align-items-center" href="/logout">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>로그 아웃</span>
+                            </a>
+                        </li>
+
+                        <li sec:authorize="isAnonymous()">
+                            <a class="dropdown-item d-flex align-items-center" href="/login">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>로그인</span>
+                            </a>
+                        </li>
+
+                        <li sec:authorize="isAnonymous()">
+                            <a class="dropdown-item d-flex align-items-center" href="/signin">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>회원 가입</span>
                             </a>
                         </li>
 
@@ -269,28 +283,28 @@
 
         <ul class="sidebar-nav" id="sidebar-nav">
 
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="isAuthenticated()">
                 <a class="nav-link collapsed" href="/mypage">
                     <i class="bi bi-person"></i>
                     <span>내 정보</span>
                 </a>
             </li><!-- End Profile Page Nav -->
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/signin">
-                    <i class="bi bi-card-list"></i>
-                    <span>회원 가입</span>
-                </a>
-            </li><!-- End Register Page Nav -->
-
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="isAnonymous()">
                 <a class="nav-link collapsed" href="/login">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>로그인</span>
                 </a>
             </li><!-- End Login Page Nav -->
 
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="nav-link collapsed" href="/signin">
+                    <i class="bi bi-card-list"></i>
+                    <span>회원 가입</span>
+                </a>
+            </li><!-- End Register Page Nav -->
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
                 <a class="nav-link collapsed" href="/logout">
                     <i class="bi bi-file-earmark"></i>
                     <span>로그 아웃</span>
