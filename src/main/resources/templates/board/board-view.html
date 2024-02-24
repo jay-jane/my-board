@@ -24,7 +24,9 @@
                                     <p class="card-subtitle text-muted mb-2">
                                         <b><span th:text="${detail.nickname}">nickname</span></b>
                                         <span style="border-left: 1px solid darkgrey; padding-right: 5px;"></span>
-                                        <span th:text="${#temporals.format(detail.regDate, 'yyyy.MM.dd HH:mm')}">datetime</span>
+                                        <span th:text="${#temporals.format(detail.regDate, 'yy.MM.dd HH:mm')}">datetime</span>
+                                        <span th:if="${detail.modDate} != null and ${detail.modDate} != ''"
+                                              th:text="'(' + ${#temporals.format(detail.modDate, 'yy.MM.dd HH:mm')} + ' 수정됨)'">modDatetime</span>
                                         <br/>
                                         조회 <span th:text="${detail.views}">view</span>
                                         <span style="border-left: 1px solid darkgrey; padding-right: 5px;"></span>
@@ -83,8 +85,12 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <button th:if="${memberId} == ${detail.memberId}" class="btn btn-primary" onclick="getModifyPage()">수정</button>
-                            <button th:if="${memberId} == ${detail.memberId}" class="btn btn-danger" onclick="deletePost()">삭제</button>
+                            <button th:if="${memberId} == ${detail.memberId}" class="btn btn-primary"
+                                    onclick="getModifyPage()">수정
+                            </button>
+                            <button th:if="${memberId} == ${detail.memberId}" class="btn btn-danger"
+                                    onclick="deletePost()">삭제
+                            </button>
                             <button class="btn btn-secondary" onclick="location.href='/board'">전체글</button>
                         </div>
                     </div>

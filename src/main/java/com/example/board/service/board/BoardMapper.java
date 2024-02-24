@@ -1,9 +1,9 @@
 package com.example.board.service.board;
 
-import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardListResDto;
-import com.example.board.repository.BoardModiReqDto;
-import com.example.board.repository.BoardRegistReqDto;
+import com.example.board.repository.board.BoardCountReqDto;
+import com.example.board.repository.board.BoardListResDto;
+import com.example.board.repository.board.BoardModiReqDto;
+import com.example.board.repository.board.BoardRegistReqDto;
 import com.example.board.util.RequestList;
 import org.apache.ibatis.annotations.Mapper;
 

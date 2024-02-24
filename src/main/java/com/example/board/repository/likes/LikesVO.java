@@ -1,4 +1,4 @@
-package com.example.board.repository;
+package com.example.board.repository.likes;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

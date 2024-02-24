@@ -1,12 +1,10 @@
 package com.example.board.config.auth;
 
-import com.example.board.controller.IndexController;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.user.UserVO;
 import com.example.board.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

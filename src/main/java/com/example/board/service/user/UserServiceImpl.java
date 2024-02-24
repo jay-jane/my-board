@@ -1,9 +1,9 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.UserJoinReqDto;
-import com.example.board.repository.UserJoinResDto;
-import com.example.board.repository.UserModiReqDto;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.user.UserJoinReqDto;
+import com.example.board.repository.user.UserJoinResDto;
+import com.example.board.repository.user.UserModiReqDto;
+import com.example.board.repository.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,8 @@
 package com.example.board.controller;
 
-import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardModiReqDto;
-import com.example.board.repository.BoardRegistReqDto;
+import com.example.board.repository.board.BoardCountReqDto;
+import com.example.board.repository.board.BoardModiReqDto;
+import com.example.board.repository.board.BoardRegistReqDto;
 import com.example.board.service.board.BoardMapper;
 import com.example.board.service.board.BoardService;
 import lombok.RequiredArgsConstructor;

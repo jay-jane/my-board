@@ -1,7 +1,6 @@
 package com.example.board.config.auth;
 
-import com.example.board.repository.UserVO;
-import lombok.Data;
+import com.example.board.repository.user.UserVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +10,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.logging.Logger;
 
 //시큐리티가 /login 주소 요청을 가로채서 로그인을 진행시킨다.
 //진행이 완료되면 시큐리티 session을 만들어 줌(Security ContextHolder)

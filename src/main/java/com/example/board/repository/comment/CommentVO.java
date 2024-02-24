@@ -1,4 +1,4 @@
-package com.example.board.repository;
+package com.example.board.repository.comment;
 
 import lombok.Data;
 import lombok.Getter;

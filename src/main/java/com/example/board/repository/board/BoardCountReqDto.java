@@ -1,12 +1,12 @@
-package com.example.board.repository;
+package com.example.board.repository.board;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 public class BoardCountReqDto {
     private String category;
