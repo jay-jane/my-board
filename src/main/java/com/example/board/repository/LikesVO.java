@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class LikeVO {
+public class LikesVO {
     private long id;
     private long memberId;
     private long boardId;

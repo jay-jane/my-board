@@ -64,4 +64,10 @@
         set is_deleted = true
         where id = #{boardId}
     </update>
+
+    <update id="getPostView" parameterType="String">
+        update board
+        set views = views + 1
+        where id = #{boardId}
+    </update>
 </mapper>

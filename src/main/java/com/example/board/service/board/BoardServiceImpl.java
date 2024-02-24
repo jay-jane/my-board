@@ -41,6 +41,7 @@ public class BoardServiceImpl implements BoardService {
         if(boardMapper.getBoardDetail(boardId).isDeleted()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제된 글입니다");
         }
+        boardMapper.getPostView(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(boardMapper.getBoardDetail(boardId));
     }
 

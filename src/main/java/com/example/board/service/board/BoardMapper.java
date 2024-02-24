@@ -24,4 +24,6 @@ public interface BoardMapper {
     List<Map<String, Object>> getBoardList(RequestList<?> requestList);
 
     int getBoardListCount(BoardCountReqDto dto);
+
+    void getPostView(String boardId);
 }
