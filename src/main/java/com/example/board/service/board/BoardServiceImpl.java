@@ -1,7 +1,6 @@
 package com.example.board.service.board;
 
 import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardListResDto;
 import com.example.board.repository.BoardModiReqDto;
 import com.example.board.repository.BoardRegistReqDto;
 import com.example.board.util.RequestList;

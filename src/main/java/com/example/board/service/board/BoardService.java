@@ -1,14 +1,12 @@
 package com.example.board.service.board;
 
 import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardListResDto;
 import com.example.board.repository.BoardModiReqDto;
 import com.example.board.repository.BoardRegistReqDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
