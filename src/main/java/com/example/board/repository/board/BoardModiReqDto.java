@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BoardModiReqDto {
-    private String id;
+    private long id;
     private String title;
     private String content;
 

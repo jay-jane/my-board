@@ -17,13 +17,13 @@ public interface BoardMapper {
 
     int modifyPost(BoardModiReqDto reqDto);
 
-    int deletePost(String boardId);
+    int deletePost(long boardId);
 
-    BoardListResDto getBoardDetail(String memberId);
+    BoardListResDto getBoardDetail(long memberId);
 
     List<Map<String, Object>> getBoardList(RequestList<?> requestList);
 
     int getBoardListCount(BoardCountReqDto dto);
 
-    void getPostView(String boardId);
+    void getPostView(long boardId);
 }

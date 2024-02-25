@@ -17,5 +17,5 @@ public class BoardListResDto {
 
     private String memberId;
     private String nickname;
-    private String like;
+    private String likes;
 }

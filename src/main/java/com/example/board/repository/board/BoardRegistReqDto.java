@@ -10,9 +10,9 @@ import lombok.Setter;
 public class BoardRegistReqDto {
     private String title;
     private String content;
-    private String memberId;
+    private long memberId;
 
-    public BoardRegistReqDto(String title, String content, String memberId) {
+    public BoardRegistReqDto(String title, String content, long memberId) {
         this.title = title;
         this.content = content;
         this.memberId = memberId;

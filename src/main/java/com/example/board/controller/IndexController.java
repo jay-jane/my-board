@@ -62,7 +62,7 @@ public class IndexController {
 
     @GetMapping("/board/view/{boardId}")
     public String boardView(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                            @PathVariable(value = "boardId", required = false) String boardId,
+                            @PathVariable(value = "boardId", required = false) long boardId,
                             Model model) {
 
         ResponseEntity<?> result = boardService.getBoardDetail(boardId);
@@ -74,12 +74,14 @@ public class IndexController {
         model.addAttribute("detail", result.getBody());
         if (principalDetails != null) {
             model.addAttribute("memberId", principalDetails.getUserVO().getId());
+        } else {
+            model.addAttribute("memberId", "notLoginUser");
         }
         return "/board/board-view";
     }
 
     @GetMapping("/board/modify/{boardId}")
-    public String boardModify(@PathVariable(value = "boardId", required = false) String boardId, Model model) {
+    public String boardModify(@PathVariable(value = "boardId", required = false) long boardId, Model model) {
         model.addAttribute("detail", boardService.getBoardDetail(boardId).getBody());
         return "/board/board-modi";
     }

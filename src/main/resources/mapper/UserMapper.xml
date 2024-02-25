@@ -9,7 +9,7 @@
         select count(*) from user where nickname = #{nickname}
     </select>
 
-    <select id="checkPassword" resultType="String">
+    <select id="checkPassword" resultType="long">
         select password from user where id = #{id}
     </select>
 
@@ -27,7 +27,7 @@
         update user set password = #{newPassword} where id = #{id}
     </update>
 
-    <delete id="deleteUser" parameterType="String">
+    <delete id="deleteUser" parameterType="long">
         delete from user where id = #{id}
     </delete>
 </mapper>

@@ -32,12 +32,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int deletePost(String boardId) {
+    public int deletePost(long boardId) {
         return boardMapper.deletePost(boardId);
     }
 
     @Override
-    public ResponseEntity<?> getBoardDetail(String boardId) {
+    public ResponseEntity<?> getBoardDetail(long boardId) {
         if(boardMapper.getBoardDetail(boardId).isDeleted()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제된 글입니다");
         }

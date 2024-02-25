@@ -14,11 +14,11 @@ public interface UserMapper {
 
     public int modifyPassword(UserModiReqDto reqDto);
 
-    public int deleteUser(String id);
+    public int deleteUser(long id);
 
     public UserVO findByLoginId(String loginId);
 
     public boolean checkNickname(String nickname);
 
-    public String checkPassword(String id);
+    public String checkPassword(long id);
 }

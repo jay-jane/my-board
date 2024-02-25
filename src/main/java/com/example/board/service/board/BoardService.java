@@ -15,9 +15,9 @@ public interface BoardService {
 
     int modifyPost(BoardModiReqDto reqDto);
 
-    int deletePost(String boardId);
+    int deletePost(long boardId);
 
-    ResponseEntity<?> getBoardDetail(String boardId);
+    ResponseEntity<?> getBoardDetail(long boardId);
 
     Page<Map<String, Object>> getBoardList(BoardCountReqDto dto, Pageable pageable);
 }

@@ -9,4 +9,6 @@ public interface LikesMapper {
     int addLikes(LikesReqDto reqDto);
 
     int deleteLikes(LikesReqDto reqDto);
+
+    int getLikes(Long boardId);
 }

@@ -19,4 +19,9 @@ public class LikesServiceImpl implements LikesService {
     public int deleteLikes(LikesReqDto reqDto) {
         return likesMapper.deleteLikes(reqDto);
     }
+
+    @Override
+    public int getLikes(Long boardId) {
+        return likesMapper.getLikes(boardId);
+    }
 }

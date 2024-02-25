@@ -16,7 +16,7 @@ public interface UserService {
 
     public int modifyPassword(UserModiReqDto reqDto);
 
-    public int deleteUser(String id);
+    public int deleteUser(long id);
 
     public UserVO findByLoginId(String loginId);
 
@@ -24,7 +24,7 @@ public interface UserService {
 
     public boolean checkNickname(String nickname);
 
-    public boolean checkPassword(String id, String newPassword);
+    public boolean checkPassword(long id, String newPassword);
 
     public Map<String, String> validateHandling(Errors errors);
 }

@@ -38,7 +38,7 @@ public class BoardController {
     }
 
     @GetMapping("/getBoardDetail")
-    public ResponseEntity<?> getBoardDetail(String boardId) {
+    public ResponseEntity<?> getBoardDetail(long boardId) {
         return boardService.getBoardDetail(boardId);
     }
 

@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(String id) {
+    public int deleteUser(long id) {
         return userMapper.deleteUser(id);
     }
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkPassword(String id, String password) {
+    public boolean checkPassword(long id, String password) {
         String originalPassword = userMapper.checkPassword(id);
         return BCrypt.checkpw(password, originalPassword);
     }
