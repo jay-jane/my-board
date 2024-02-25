@@ -10,5 +10,7 @@ public interface LikesMapper {
 
     int deleteLikes(LikesReqDto reqDto);
 
-    int getLikes(Long boardId);
+    int getLikes(long boardId);
+
+    boolean checkLikes(LikesReqDto reqDto);
 }

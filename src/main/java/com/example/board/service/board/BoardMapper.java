@@ -6,6 +6,7 @@ import com.example.board.repository.board.BoardModiReqDto;
 import com.example.board.repository.board.BoardRegistReqDto;
 import com.example.board.util.RequestList;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;

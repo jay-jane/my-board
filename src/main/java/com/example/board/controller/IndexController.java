@@ -3,6 +3,7 @@ package com.example.board.controller;
 import com.example.board.config.auth.PrincipalDetails;
 import com.example.board.repository.board.BoardCountReqDto;
 import com.example.board.service.board.BoardService;
+import com.example.board.service.likes.LikesService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

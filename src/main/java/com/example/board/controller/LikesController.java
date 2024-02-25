@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.repository.likes.LikesReqDto;
+import com.example.board.service.likes.LikesMapper;
 import com.example.board.service.likes.LikesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

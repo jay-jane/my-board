@@ -8,5 +8,5 @@ public interface LikesService {
 
     int deleteLikes(LikesReqDto reqDto);
 
-    int getLikes(Long boardId);
+    int getLikes(long boardId);
 }
