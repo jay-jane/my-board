@@ -11,9 +11,17 @@
         where member_id = #{memberId} and board_id = #{boardId}
     </select>
 
+    <select id="findById" resultType="LikesResDto">
+        select * from likes where id = #{id}
+    </select>
+
     <insert id="addLikes" parameterType="LikesReqDto">
         insert into likes (member_id, board_id)
         values (#{memberId}, #{boardId})
+
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select last_insert_id()
+        </selectKey>
     </insert>
 
     <delete id="deleteLikes" parameterType="LikesReqDto">

@@ -30,7 +30,7 @@
                                         <br/>
                                         조회 <span th:text="${detail.views}">view</span>
                                         <span style="border-left: 1px solid darkgrey; padding-right: 5px;"></span>
-                                        추천 <span>likes</span>
+                                        추천 <span th:text="${detail.likes}">likes</span>
                                     </p>
                                     <hr/>
 
@@ -41,9 +41,9 @@
                                     <!-- 글 추천수 -->
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div class="text-muted">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="likesButton()">
+                                            <button id="likes-button" type="button" class="btn btn-sm btn-outline-primary" onclick="likesFx()">
                                                 <span id="likes" th:text="${detail.likes}"></span><br/>
-                                                추천
+                                                <span id="likes-text">추천</span>
                                             </button>
                                         </div>
                                     </div>
@@ -99,6 +99,21 @@
 
         <script>
             const request = new XMLHttpRequest();
+            const likesButton = document.querySelector('#likes-button');
+            const likes = document.querySelector('#likes');
+            const likesText = document.querySelector('#likes-text');
+
+            window.onload = () => {
+                if ([[${checkLikes}]]) {
+                    const likesButton = document.querySelector('#likes-button');
+                    const likes = document.querySelector('#likes');
+                    const likesText = document.querySelector('#likes-text');
+
+                    likesButton.style.backgroundColor = '#0d6efd';
+                    likes.style.color = '#fff';
+                    likesText.style.color = '#fff';
+                }
+            }
 
             function deletePost() {
                 if (confirm('정말 삭제하시겠습니까?')) {
@@ -127,7 +142,7 @@
                 window.location.href='http://localhost:8081/board/modify/' + [[${detail.id}]];
             }
 
-            function likesButton() {
+            function likesFx() {
                 if ('[[${memberId}]]' == 'notLoginUser') {
                     alert('추천은 로그인 한 회원만 가능합니다');
                 } else {
@@ -135,19 +150,32 @@
                         memberId: [[${memberId}]],
                         boardId: [[${detail.id}]]
                     }
+
                     request.open('POST', 'http://localhost:8081/addLikes', true);
                     request.setRequestHeader('Content-type', 'application/json');
                     request.send(JSON.stringify(data));
                     request.onload = () => {
                         if (request.status == 200) {
-                            if (request.response == 1) {
-                                const likes = document.querySelector('#likes');
-
+                            if (request.response != null && request.response != '') {
                                 request.open('GET', 'http://localhost:8081/getLikes?boardId=' + [[${detail.id}]], true);
                                 request.send();
                                 request.onload = () => {
                                     if (request.status == 200) {
                                         likes.innerHTML = request.response;
+                                        likes.style.color = '#fff';
+                                        likesText.style.color = '#fff';
+                                        likesButton.style.backgroundColor = '#0d6efd';
+                                    }
+                                }
+                            } else {
+                                request.open('GET', 'http://localhost:8081/getLikes?boardId=' + [[${detail.id}]], true);
+                                request.send();
+                                request.onload = () => {
+                                    if (request.status == 200) {
+                                        likes.innerHTML = request.response;
+                                        likes.style.color = '#0d6efd';
+                                        likesText.style.color = '#0d6efd';
+                                        likesButton.style.backgroundColor = '#fff';
                                     }
                                 }
                             }

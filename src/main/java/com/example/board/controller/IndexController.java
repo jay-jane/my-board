@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.config.auth.PrincipalDetails;
 import com.example.board.repository.board.BoardCountReqDto;
+import com.example.board.repository.likes.LikesReqDto;
 import com.example.board.service.board.BoardService;
 import com.example.board.service.likes.LikesService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     private final BoardService boardService;
+
+    private final LikesService likesService;
 
     @GetMapping(value = {"/", "/board"}) //일반, OAuth 로그인 모두 PrincipalDetails에 정보를 담을 수 있음
     public String boardMain(BoardCountReqDto dto, Pageable pageable, Model model) {
@@ -67,16 +70,20 @@ public class IndexController {
                             Model model) {
 
         ResponseEntity<?> result = boardService.getBoardDetail(boardId);
-        if(result.getStatusCode() == HttpStatusCode.valueOf(404)) {
+        if (result.getStatusCode() == HttpStatusCode.valueOf(404)) {
             model.addAttribute("message", result.getBody());
             return "/errors/board-404";
         }
 
         model.addAttribute("detail", result.getBody());
         if (principalDetails != null) {
-            model.addAttribute("memberId", principalDetails.getUserVO().getId());
+            long memberId = principalDetails.getUserVO().getId();
+            LikesReqDto reqDto = new LikesReqDto(memberId, boardId);
+            model.addAttribute("memberId", memberId);
+            model.addAttribute("checkLikes", likesService.checkLikes(reqDto));
         } else {
             model.addAttribute("memberId", "notLoginUser");
+            model.addAttribute("checkLikes", false);
         }
         return "/board/board-view";
     }
