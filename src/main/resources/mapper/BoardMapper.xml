@@ -8,29 +8,32 @@
 
     <select id="getBoardDetail" resultType="BoardListResDto">
         select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.member_id, b.is_deleted,
-        u.id, u.nickname
+        u.id, u.nickname, count(l.id) as likes
         from board b
         left join user u on b.member_id = u.id
+        left join likes l on b.id = l.board_id
         where b.id = #{boardId}
     </select>
 
     <select id="getBoardList" parameterType="RequestList" resultType="BoardListResDto">
         select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.is_deleted,
-        u.id, u.nickname
+        u.id, u.nickname, count(l.id) as likes
         from board b
         left join user u on b.member_id = u.id
+        left join likes l on b.id = l.board_id
         where b.is_deleted = false
         <if test="data.keyword != null and data.keyword != ''">
             <if test="data.category == 'title'">
-                and b.title like concat('%',#{data.keyword},'%')
+                and b.title like concat('%', #{data.keyword}, '%')
             </if>
             <if test="data.category == 'content'">
                 and b.content like concat('%', #{data.keyword}, '%')
             </if>
             <if test="data.category == 'nickname'">
-                and u.nickname like concat('%',#{data.keyword},'%')
+                and u.nickname like concat('%', #{data.keyword}, '%')
             </if>
         </if>
+        group by b.id
         order by b.id desc
         limit #{pageable.offset}, #{pageable.pageSize}
     </select>
@@ -59,9 +62,15 @@
         where id = #{id} and is_deleted = false
     </update>
 
-    <update id="deletePost" parameterType="String">
+    <update id="deletePost" parameterType="long">
         update board
         set is_deleted = true
+        where id = #{boardId}
+    </update>
+
+    <update id="getPostView" parameterType="long">
+        update board
+        set views = views + 1
         where id = #{boardId}
     </update>
 </mapper>

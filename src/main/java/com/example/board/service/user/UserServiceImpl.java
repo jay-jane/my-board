@@ -1,9 +1,9 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.UserJoinReqDto;
-import com.example.board.repository.UserJoinResDto;
-import com.example.board.repository.UserModiReqDto;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.user.UserJoinReqDto;
+import com.example.board.repository.user.UserJoinResDto;
+import com.example.board.repository.user.UserModiReqDto;
+import com.example.board.repository.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(String id) {
+    public int deleteUser(long id) {
         return userMapper.deleteUser(id);
     }
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkPassword(String id, String password) {
+    public boolean checkPassword(long id, String password) {
         String originalPassword = userMapper.checkPassword(id);
         return BCrypt.checkpw(password, originalPassword);
     }

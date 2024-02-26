@@ -1,12 +1,14 @@
-package com.example.board.repository;
+package com.example.board.repository.board;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class BoardListResDto {
+@NoArgsConstructor
+public class BoardVO {
     private long id;
     private String title;
     private String content;
@@ -14,8 +16,5 @@ public class BoardListResDto {
     private LocalDateTime modDate;
     private long views;
     private boolean isDeleted;
-
-    private String memberId;
-    private String nickname;
-    private String like;
+    private long memberId;
 }

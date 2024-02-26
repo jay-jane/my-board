@@ -38,9 +38,9 @@
                                                   onmouseover="this.style.cursor='pointer'" th:text="${board.title}">title</span>
                                         </td>
                                         <td id="board-writer" th:text="${board.nickname}">닉네임</td>
-                                        <td id="board-like">추천</td>
+                                        <td id="board-like" th:text="${board.likes}">추천</td>
                                         <td id="board-reg-date"
-                                            th:text="${#temporals.format(board.regDate, 'yyyy.MM.dd HH:mm')}">작성일
+                                            th:text="${#temporals.format(board.regDate, 'yy.MM.dd HH:mm')}">작성일
                                         </td>
                                         <td id="board-view" th:text="${board.views}">조회</td>
                                     </tr>

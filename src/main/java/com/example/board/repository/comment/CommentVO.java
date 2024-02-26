@@ -1,4 +1,4 @@
-package com.example.board.repository;
+package com.example.board.repository.comment;
 
 import lombok.Data;
 import lombok.Getter;
@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class BoardVO {
+public class CommentVO {
     private long id;
-    private String title;
     private String content;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
-    private long views;
     private boolean isDeleted;
     private long memberId;
+    private long boardId;
+    private long parentComId;
 }

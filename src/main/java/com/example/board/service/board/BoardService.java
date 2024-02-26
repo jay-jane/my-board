@@ -1,8 +1,8 @@
 package com.example.board.service.board;
 
-import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardModiReqDto;
-import com.example.board.repository.BoardRegistReqDto;
+import com.example.board.repository.board.BoardCountReqDto;
+import com.example.board.repository.board.BoardModiReqDto;
+import com.example.board.repository.board.BoardRegistReqDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +15,9 @@ public interface BoardService {
 
     int modifyPost(BoardModiReqDto reqDto);
 
-    int deletePost(String boardId);
+    int deletePost(long boardId);
 
-    ResponseEntity<?> getBoardDetail(String boardId);
+    ResponseEntity<?> getBoardDetail(long boardId);
 
     Page<Map<String, Object>> getBoardList(BoardCountReqDto dto, Pageable pageable);
 }

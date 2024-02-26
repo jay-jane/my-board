@@ -1,8 +1,8 @@
 package com.example.board.service.board;
 
-import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardModiReqDto;
-import com.example.board.repository.BoardRegistReqDto;
+import com.example.board.repository.board.BoardCountReqDto;
+import com.example.board.repository.board.BoardModiReqDto;
+import com.example.board.repository.board.BoardRegistReqDto;
 import com.example.board.util.RequestList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,15 +32,16 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int deletePost(String boardId) {
+    public int deletePost(long boardId) {
         return boardMapper.deletePost(boardId);
     }
 
     @Override
-    public ResponseEntity<?> getBoardDetail(String boardId) {
+    public ResponseEntity<?> getBoardDetail(long boardId) {
         if(boardMapper.getBoardDetail(boardId).isDeleted()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제된 글입니다");
         }
+        boardMapper.getPostView(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(boardMapper.getBoardDetail(boardId));
     }
 

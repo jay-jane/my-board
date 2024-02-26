@@ -1,9 +1,9 @@
 package com.example.board.service.user;
 
-import com.example.board.repository.UserJoinReqDto;
-import com.example.board.repository.UserJoinResDto;
-import com.example.board.repository.UserModiReqDto;
-import com.example.board.repository.UserVO;
+import com.example.board.repository.user.UserJoinReqDto;
+import com.example.board.repository.user.UserJoinResDto;
+import com.example.board.repository.user.UserModiReqDto;
+import com.example.board.repository.user.UserVO;
 import org.springframework.validation.Errors;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public interface UserService {
 
     public int modifyPassword(UserModiReqDto reqDto);
 
-    public int deleteUser(String id);
+    public int deleteUser(long id);
 
     public UserVO findByLoginId(String loginId);
 
@@ -24,7 +24,7 @@ public interface UserService {
 
     public boolean checkNickname(String nickname);
 
-    public boolean checkPassword(String id, String newPassword);
+    public boolean checkPassword(long id, String newPassword);
 
     public Map<String, String> validateHandling(Errors errors);
 }

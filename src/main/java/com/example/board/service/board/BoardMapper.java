@@ -1,11 +1,12 @@
 package com.example.board.service.board;
 
-import com.example.board.repository.BoardCountReqDto;
-import com.example.board.repository.BoardListResDto;
-import com.example.board.repository.BoardModiReqDto;
-import com.example.board.repository.BoardRegistReqDto;
+import com.example.board.repository.board.BoardCountReqDto;
+import com.example.board.repository.board.BoardListResDto;
+import com.example.board.repository.board.BoardModiReqDto;
+import com.example.board.repository.board.BoardRegistReqDto;
 import com.example.board.util.RequestList;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,13 @@ public interface BoardMapper {
 
     int modifyPost(BoardModiReqDto reqDto);
 
-    int deletePost(String boardId);
+    int deletePost(long boardId);
 
-    BoardListResDto getBoardDetail(String memberId);
+    BoardListResDto getBoardDetail(long memberId);
 
     List<Map<String, Object>> getBoardList(RequestList<?> requestList);
 
     int getBoardListCount(BoardCountReqDto dto);
+
+    void getPostView(long boardId);
 }
