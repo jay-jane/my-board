@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
@@ -20,5 +22,10 @@ public class CommentServiceImpl implements CommentService {
     public CommentRegistResDto registComment(CommentRegistReqDto reqDto) {
         commentMapper.registComment(reqDto);
         return commentMapper.findById(reqDto.getId());
+    }
+
+    @Override
+    public List<CommentRegistResDto> getCommentList(long boardId) {
+        return commentMapper.getCommentList(boardId);
     }
 }

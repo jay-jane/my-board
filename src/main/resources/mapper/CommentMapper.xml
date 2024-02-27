@@ -15,4 +15,11 @@
         from comment
         where id = #{id}
     </select>
+
+    <select id="getCommentList" resultType="CommentRegistResDto">
+        select c.id, c.content, c.reg_date, c.mod_date, c.is_deleted, c.member_id, c.parent_com_id, u.nickname
+        from comment c
+        left join user u on c.member_id = u.id
+        where board_id = #{boardId}
+    </select>
 </mapper>

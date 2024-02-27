@@ -3,6 +3,7 @@ package com.example.board.controller;
 import com.example.board.repository.comment.CommentRegistReqDto;
 import com.example.board.service.comment.CommentService;
 import com.example.board.service.likes.LikesServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class CommentController {
     private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     @PostMapping("/registComment")
-    public ResponseEntity<?> registComment(@RequestBody CommentRegistReqDto reqDto) {
+    public ResponseEntity<?> registComment(@Valid @RequestBody CommentRegistReqDto reqDto) {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.registComment(reqDto));
     }
 }

@@ -4,6 +4,7 @@ import com.example.board.config.auth.PrincipalDetails;
 import com.example.board.repository.board.BoardCountReqDto;
 import com.example.board.repository.likes.LikesReqDto;
 import com.example.board.service.board.BoardService;
+import com.example.board.service.comment.CommentService;
 import com.example.board.service.likes.LikesService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class IndexController {
     private final BoardService boardService;
 
     private final LikesService likesService;
+
+    private final CommentService commentService;
 
     @GetMapping(value = {"/", "/board"}) //일반, OAuth 로그인 모두 PrincipalDetails에 정보를 담을 수 있음
     public String boardMain(BoardCountReqDto dto, Pageable pageable, Model model) {
@@ -75,6 +78,8 @@ public class IndexController {
             return "/errors/board-404";
         }
 
+        model.addAttribute("commentList", commentService.getCommentList(boardId));
+        logger.info("값:{}", commentService.getCommentList(boardId));
         model.addAttribute("detail", result.getBody());
         if (principalDetails != null) {
             long memberId = principalDetails.getUserVO().getId();

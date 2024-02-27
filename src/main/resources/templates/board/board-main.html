@@ -48,51 +48,49 @@
                                 </table>
                                 <!-- End Table with stripped rows -->
                                 <div th:if="${!boardList.isEmpty()}">
-                                    <div th:style="${'text-align: center'}">
-                                        <ul class="pagination"
-                                            th:with="pageNumber = ${boardList.pageable.pageNumber},
+                                    <ul class="pagination"
+                                        th:with="pageNumber = ${boardList.pageable.pageNumber},
                                                      buttonSize = 5,
                                                      totalPages = ${boardList.totalPages},
                                                      startPage = ${T(java.lang.Math).floor(pageNumber / buttonSize) * buttonSize + 1},
                                                      tempEndPage = ${startPage + buttonSize - 1},
                                                      endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
-                                            <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
-                                                <a class="page-link"
-                                                   th:href="${boardList.first} ? '#' : @{board(page=1, category=${dto.category}, keyword=${dto.keyword})}">
-                                                    <span aria-hidden="true">&lt;&lt;</span>
-                                                </a>
-                                            </li>
+                                        <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
+                                            <a class="page-link"
+                                               th:href="${boardList.first} ? '#' : @{board(page=1, category=${dto.category}, keyword=${dto.keyword})}">
+                                                <span aria-hidden="true">&lt;&lt;</span>
+                                            </a>
+                                        </li>
 
-                                            <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
-                                                <a class="page-link"
-                                                   th:href="${boardList.first} ? '#' : @{board(page=${pageNumber}, category=${dto.category}, keyword=${dto.keyword})}">
-                                                    <span aria-hidden="true">&lt;</span>
-                                                </a>
-                                            </li>
+                                        <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
+                                            <a class="page-link"
+                                               th:href="${boardList.first} ? '#' : @{board(page=${pageNumber}, category=${dto.category}, keyword=${dto.keyword})}">
+                                                <span aria-hidden="true">&lt;</span>
+                                            </a>
+                                        </li>
 
-                                            <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
-                                                th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
-                                                <a th:text="${page}" class="page-link"
-                                                   th:href="@{board(page=${page}, category=${dto.category}, keyword=${dto.keyword})}"></a>
-                                            </li>
+                                        <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                                            th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
+                                            <a th:text="${page}" class="page-link"
+                                               th:href="@{board(page=${page}, category=${dto.category}, keyword=${dto.keyword})}"></a>
+                                        </li>
 
-                                            <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
-                                                <a class="page-link"
-                                                   th:href="${boardList.last} ? '#' : @{board(page=${pageNumber + 2}, category=${dto.category}, keyword=${dto.keyword})}"
-                                                   aria-label="Next">
-                                                    <span aria-hidden="true">&gt;</span>
-                                                </a>
-                                            </li>
+                                        <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
+                                            <a class="page-link"
+                                               th:href="${boardList.last} ? '#' : @{board(page=${pageNumber + 2}, category=${dto.category}, keyword=${dto.keyword})}"
+                                               aria-label="Next">
+                                                <span aria-hidden="true">&gt;</span>
+                                            </a>
+                                        </li>
 
-                                            <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
-                                                <a class="page-link"
-                                                   th:href="${boardList.last} ? '#' : @{board(page=${totalPages}, category=${dto.category}, keyword=${dto.keyword})}"
-                                                   aria-label="Next">
-                                                    <span aria-hidden="true">&gt;&gt;</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                        <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
+                                            <a class="page-link"
+                                               th:href="${boardList.last} ? '#' : @{board(page=${totalPages}, category=${dto.category}, keyword=${dto.keyword})}"
+                                               aria-label="Next">
+                                                <span aria-hidden="true">&gt;&gt;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <button type="button" class="btn btn-primary btn-sm"
                                         onclick="location.href='board/write'">
