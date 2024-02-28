@@ -79,7 +79,7 @@ public class IndexController {
         }
 
         model.addAttribute("commentList", commentService.getCommentList(boardId));
-        logger.info("값:{}", commentService.getCommentList(boardId));
+
         model.addAttribute("detail", result.getBody());
         if (principalDetails != null) {
             long memberId = principalDetails.getUserVO().getId();

@@ -1,5 +1,6 @@
 package com.example.board.service.comment;
 
+import com.example.board.repository.comment.CommentDeleteReqDto;
 import com.example.board.repository.comment.CommentRegistReqDto;
 import com.example.board.repository.comment.CommentRegistResDto;
 import com.example.board.service.likes.LikesServiceImpl;
@@ -27,5 +28,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentRegistResDto> getCommentList(long boardId) {
         return commentMapper.getCommentList(boardId);
+    }
+
+    @Override
+    public int deleteComment(CommentDeleteReqDto reqDto) {
+        return commentMapper.deleteComment(reqDto);
     }
 }

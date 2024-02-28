@@ -208,6 +208,7 @@
                         request.onload = () => {
                             if (request.status == 200) {
                                 comment.value = '';
+                                window.location.reload();
                             } else if (request.status == 400) {
                                 comment.value = '';
                                 alert('내용을 입력해 주세요');

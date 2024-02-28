@@ -22,4 +22,9 @@
         left join user u on c.member_id = u.id
         where board_id = #{boardId}
     </select>
+
+    <update id="deleteComment" parameterType="CommentDeleteReqDto">
+        update comment set is_deleted = true
+        where id = #{id}
+    </update>
 </mapper>
