@@ -27,6 +27,6 @@ public class CommentController {
 
     @PatchMapping("/deleteComment")
     public int deleteComment(@RequestBody CommentDeleteReqDto reqDto) {
-        return 0;
+        return commentService.deleteComment(reqDto);
     }
 }

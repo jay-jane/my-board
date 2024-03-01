@@ -58,14 +58,57 @@
 
                                     <small class="text-muted" th:if="${commentList.isEmpty()}">댓글이 아직 없습니다</small>
                                     <div class="media mb-3" th:each="comment : ${commentList}">
-                                        <div class="media-body">
+                                        <div class="media-body" th:if="${comment.isDeleted == true}">
+                                            <span class="text-muted">삭제된 댓글입니다</span>
+                                            <hr/>
+                                        </div>
+                                        <div class="media-body" th:if="${comment.isDeleted == false}"
+                                             style="cursor: pointer;" th:onclick="addNestedComment([[${comment.id}]])">
                                             <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
                                                  style="width: 10px; height: 10px;">
                                             <span class="mt-0" th:text="${comment.nickname}" style="font-size: 15px;">작성자</span><br/>
-                                            <span th:text="${comment.content}" style="font-weight: bold;">댓글 내용</span><br/>
+                                            <span th:text="${comment.content}"
+                                                  style="font-weight: bold;">댓글 내용</span><br/>
                                             <small class="text-muted"
                                                    th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
-                                            <button type="button" class="btn btn-sm btn-danger">삭제</button><hr/>
+                                            <button th:if="${memberId} == ${comment.memberId}" type="button"
+                                                    class="btn btn-sm btn-danger">삭제
+                                            </button>
+                                            <hr/>
+                                        </div>
+
+                                        <!-- 대댓글 작성 양식 -->
+                                        <div th:id="'nestedCommentForm-' + ${comment.id}" style="display: none;">
+                                            <form style="margin-left: 5%">
+                                                <div class="mb-3">
+                                                    <img src="/assets/img/favicon.png" class="rounded-circle" alt="x"
+                                                         style="width: 6px; height: 6px;">
+                                                    <span sec:authorize="isAuthenticated()"
+                                                          sec:authentication="principal.userVO.nickname"></span><br/>
+                                                    <textarea id="replyContent_${comment.id}" class="form-control"
+                                                              placeholder="댓글을 입력하세요" rows="2"></textarea>
+                                                    <button type="button" class="btn btn-primary mt-2" onclick="">작성
+                                                    </button>
+                                                    <hr/>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- 대댓글 표시 -->
+                                        <div style="margin-left: 5%">
+                                            <div class="media mt-3">
+                                                <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
+                                                     style="width: 10px; height: 10px;">
+                                                <div class="media-body">
+                                                    <span class="mt-0" style="font-size: 15px;">작성자</span><br/>
+                                                    <span style="font-weight: bold;">댓글 내용</span><br/>
+                                                    <small class="text-muted">date</small>
+                                                    <button th:if="${memberId} == ${comment.memberId}" type="button"
+                                                            class="btn btn-sm btn-danger">삭제
+                                                    </button>
+                                                    <hr/>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -73,7 +116,8 @@
                                         <div class="mb-3">
                                             <img src="/assets/img/favicon.png" class="rounded-circle" alt="x"
                                                  style="width: 6px; height: 6px;">
-                                            <span sec:authorize="isAuthenticated()" sec:authentication="principal.userVO.nickname"></span><br/>
+                                            <span sec:authorize="isAuthenticated()"
+                                                  sec:authentication="principal.userVO.nickname"></span><br/>
                                             <textarea id="commentContent" class="form-control" placeholder="댓글을 입력하세요"
                                                       rows="2"></textarea>
                                             <button type="button" class="btn btn-primary mt-2" onclick="addComment()">
@@ -220,6 +264,13 @@
                         alert('내용을 입력해 주세요');
                     }
                 }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function addNestedComment(id) {
+                const commentInput = document.querySelector('#nestedCommentForm-' + id);
+                console.log(commentInput);
             }
         </script>
     </th:block>
