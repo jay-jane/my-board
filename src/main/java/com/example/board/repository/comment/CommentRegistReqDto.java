@@ -13,4 +13,5 @@ public class CommentRegistReqDto {
     private String content;
     private long memberId;
     private long boardId;
+    private long parentComId;
 }

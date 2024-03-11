@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.board.service.comment.CommentMapper">
     <insert id="registComment" parameterType="CommentRegistReqDto">
-        insert into comment(content, member_id, board_id)
-        values(#{content}, #{memberId}, #{boardId})
+        insert into comment(content, member_id, board_id, parent_com_id)
+        values(#{content}, #{memberId}, #{boardId}, #{parentComId})
 
         <selectKey keyProperty="id" resultType="long" order="AFTER">
             select last_insert_id()

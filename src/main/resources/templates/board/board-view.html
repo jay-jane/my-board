@@ -63,7 +63,8 @@
                                             <hr/>
                                         </div>
                                         <div class="media-body" th:if="${comment.isDeleted == false}"
-                                             style="cursor: pointer;" th:onclick="addNestedComment([[${comment.id}]])">
+                                             style="cursor: pointer;"
+                                             th:onclick="inputNestedComment([[${comment.id}]])">
                                             <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
                                                  style="width: 10px; height: 10px;">
                                             <span class="mt-0" th:text="${comment.nickname}" style="font-size: 15px;">작성자</span><br/>
@@ -78,16 +79,18 @@
                                         </div>
 
                                         <!-- 대댓글 작성 양식 -->
-                                        <div th:id="'nestedCommentForm-' + ${comment.id}" style="display: none;">
+                                        <div th:id="'nested-comment-form-' + ${comment.id}" style="display: none;">
                                             <form style="margin-left: 5%">
                                                 <div class="mb-3">
                                                     <img src="/assets/img/favicon.png" class="rounded-circle" alt="x"
                                                          style="width: 6px; height: 6px;">
                                                     <span sec:authorize="isAuthenticated()"
                                                           sec:authentication="principal.userVO.nickname"></span><br/>
-                                                    <textarea id="replyContent_${comment.id}" class="form-control"
-                                                              placeholder="댓글을 입력하세요" rows="2"></textarea>
-                                                    <button type="button" class="btn btn-primary mt-2" onclick="">작성
+                                                    <textarea th:id="'reply-content-' + ${comment.id}"
+                                                              class="form-control"
+                                                              placeholder="답글을 입력하세요" rows="2"></textarea>
+                                                    <button type="button" class="btn btn-primary mt-2"
+                                                            th:onclick="addNestedComment([[${comment.id}]])">작성
                                                     </button>
                                                     <hr/>
                                                 </div>
@@ -100,9 +103,12 @@
                                                 <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
                                                      style="width: 10px; height: 10px;">
                                                 <div class="media-body">
-                                                    <span class="mt-0" style="font-size: 15px;">작성자</span><br/>
-                                                    <span style="font-weight: bold;">댓글 내용</span><br/>
-                                                    <small class="text-muted">date</small>
+                                                    <span class="mt-0" style="font-size: 15px;"
+                                                          th:text="${comment.nickname}">작성자</span><br/>
+                                                    <span style="font-weight: bold;"
+                                                          th:text="${comment.content}">답글 내용</span><br/>
+                                                    <small class="text-muted"
+                                                           th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
                                                     <button th:if="${memberId} == ${comment.memberId}" type="button"
                                                             class="btn btn-sm btn-danger">삭제
                                                     </button>
@@ -268,9 +274,49 @@
         </script>
 
         <script th:inline="javascript">
+            function inputNestedComment(id) {
+                const commentInput = document.querySelector('#nested-comment-form-' + id);
+                if (commentInput.style.display == 'block') {
+                    commentInput.style.display = 'none';
+                } else {
+                    commentInput.style.display = 'block';
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
             function addNestedComment(id) {
-                const commentInput = document.querySelector('#nestedCommentForm-' + id);
-                console.log(commentInput);
+                if ([[${memberId}]] == 'notLoginUser') {
+                    alert('로그인해 주세요');
+                } else {
+                    console.log([[${memberId}]]);
+                    const comment = document.querySelector('#reply-content-' + id);
+                    const data = {
+                        content: comment.value,
+                        memberId: [[${memberId}]],
+                        boardId: [[${detail.id}]],
+                        parentComId: id
+                    }
+                    if (comment.value != null && comment.value != '') {
+                        const request = new XMLHttpRequest();
+                        request.open('POST', 'http://localhost:8081/registComment', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                comment.value = '';
+                                window.location.reload();
+                            } else if (request.status == 400) {
+                                comment.value = '';
+                                alert('내용을 입력해 주세요');
+                            } else {
+                                alert('오류가 발생했습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    } else {
+                        alert('내용을 입력해 주세요');
+                    }
+                }
             }
         </script>
     </th:block>
