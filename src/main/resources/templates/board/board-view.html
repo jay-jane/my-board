@@ -62,9 +62,32 @@
                                             <span class="text-muted">삭제된 댓글입니다</span>
                                             <hr/>
                                         </div>
-                                        <div class="media-body" th:if="${comment.isDeleted == false}"
+
+                                        <!-- 댓글 보기 -->
+                                        <div class="media-body"
+                                             th:if="${comment.isDeleted == false} and ${comment.parentComId == 0}"
                                              style="cursor: pointer;"
-                                             th:onclick="inputNestedComment([[${comment.id}]])">
+                                             th:styleappend="${comment.parentComId != 0 ? 'margin-left: 5%;' : ''}">
+                                            <div th:onclick="inputNestedComment([[${comment.id}]])">
+                                                <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
+                                                     style="width: 10px; height: 10px;">
+                                                <span class="mt-0" th:text="${comment.nickname}"
+                                                      style="font-size: 15px;">작성자</span><br/>
+                                                <span th:text="${comment.content}"
+                                                      style="font-weight: bold;">댓글 내용</span><br/>
+                                                <small class="text-muted"
+                                                       th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
+                                            </div>
+                                            <button th:if="${memberId} == ${comment.memberId}" type="button"
+                                                    class="btn btn-sm btn-danger" onclick="deleteComment()">삭제
+                                            </button>
+                                            <hr/>
+                                        </div>
+
+                                        <!-- 대댓글 보기 -->
+                                        <div class="media-body"
+                                             th:if="${comment.isDeleted == false} and ${comment.parentComId != 0}"
+                                             style="margin-left: 5%;">
                                             <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
                                                  style="width: 10px; height: 10px;">
                                             <span class="mt-0" th:text="${comment.nickname}" style="font-size: 15px;">작성자</span><br/>
@@ -73,7 +96,7 @@
                                             <small class="text-muted"
                                                    th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
                                             <button th:if="${memberId} == ${comment.memberId}" type="button"
-                                                    class="btn btn-sm btn-danger">삭제
+                                                    class="btn btn-sm btn-danger" onclick="deleteComment()">삭제
                                             </button>
                                             <hr/>
                                         </div>
@@ -95,26 +118,6 @@
                                                     <hr/>
                                                 </div>
                                             </form>
-                                        </div>
-
-                                        <!-- 대댓글 표시 -->
-                                        <div style="margin-left: 5%; display: none;">
-                                            <div class="media mt-3">
-                                                <img src="/assets/img/favicon.png" class="mr-3 rounded-circle" alt="x"
-                                                     style="width: 10px; height: 10px;">
-                                                <div class="media-body">
-                                                    <span class="mt-0" style="font-size: 15px;"
-                                                          th:text="${comment.nickname}">작성자</span><br/>
-                                                    <span style="font-weight: bold;"
-                                                          th:text="${comment.content}">답글 내용</span><br/>
-                                                    <small class="text-muted"
-                                                           th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
-                                                    <button th:if="${memberId} == ${comment.memberId}" type="button"
-                                                            class="btn btn-sm btn-danger">삭제
-                                                    </button>
-                                                    <hr/>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 
@@ -270,6 +273,10 @@
                         alert('내용을 입력해 주세요');
                     }
                 }
+            }
+
+            function deleteComment() {
+                alert('dd');
             }
         </script>
 

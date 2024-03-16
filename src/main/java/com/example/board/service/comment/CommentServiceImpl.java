@@ -27,7 +27,16 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentRegistResDto> getCommentList(long boardId) {
-        return commentMapper.getCommentList(boardId);
+        List<CommentRegistResDto> result = commentMapper.getCommentList(boardId);
+        for (CommentRegistResDto resDto : result) {
+            if (resDto.isDeleted()) {
+                resDto.setContent(null);
+                resDto.setNickname(null);
+                resDto.setRegDate(null);
+                resDto.setModDate(null);
+            }
+        }
+        return result;
     }
 
     @Override

@@ -21,6 +21,7 @@
         from comment c
         left join user u on c.member_id = u.id
         where board_id = #{boardId}
+        order by if(c.parent_com_id = 0, c.id, c.parent_com_id);
     </select>
 
     <update id="deleteComment" parameterType="CommentDeleteReqDto">
