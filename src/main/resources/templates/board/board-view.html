@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{layouts/default-layout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
@@ -41,7 +42,8 @@
                                     <!-- 글 추천수 -->
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div class="text-muted">
-                                            <button id="likes-button" type="button" class="btn btn-sm btn-outline-primary" onclick="likesFx()">
+                                            <button id="likes-button" type="button"
+                                                    class="btn btn-sm btn-outline-primary" onclick="likesFx()">
                                                 <span id="likes" th:text="${detail.likes}"></span><br/>
                                                 <span id="likes-text">추천</span>
                                             </button>
@@ -54,27 +56,92 @@
                                 <div class="container mt-4">
                                     <h6 class="card-subtitle mb-2 text-muted">댓글</h6>
 
-                                    <!-- 각 댓글은 아래와 같은 형식으로 표시됩니다. -->
-                                    <div class="media mb-3">
-                                        <img src="" class="mr-3 rounded-circle" alt="User Avatar"
-                                             style="width: 48px; height: 48px;">
-                                        <div class="media-body">
-                                            <h6 class="mt-0">댓글 작성자</h6>
-                                            <p>댓글 내용이 여기에 들어갑니다.</p>
-                                            <small class="text-muted">댓글 작성 날짜</small>
-                                            <button type="button" class="btn btn-sm btn-danger">삭제</button>
+                                    <small class="text-muted" th:if="${commentList.isEmpty()}">댓글이 아직 없습니다</small>
+                                    <div class="media mb-3" th:each="comment : ${commentList}">
+                                        <div class="media-body"
+                                             th:if="${comment.isDeleted == true} and ${comment.parentComId == 0}">
+                                            <span class="text-muted">삭제된 댓글입니다</span>
+                                            <hr/>
+                                        </div>
+
+                                        <div class="media-body"
+                                             th:if="${comment.isDeleted == true} and ${comment.parentComId != 0}"
+                                             style="margin-left: 5%;">
+                                            <span class="text-muted">삭제된 답글입니다</span>
+                                            <hr/>
+                                        </div>
+
+                                        <!-- 댓글 보기 -->
+                                        <div class="media-body"
+                                             th:if="${comment.isDeleted == false} and ${comment.parentComId == 0}"
+                                             style="cursor: pointer;"
+                                             th:styleappend="${comment.parentComId != 0 ? 'margin-left: 5%;' : ''}">
+                                            <div th:onclick="inputNestedComment([[${comment.id}]])">
+                                                <img src="/assets/img/star.png" class="mr-3 rounded-circle" alt="x"
+                                                     style="width: 10px; height: 10px;">
+                                                <span class="mt-0" th:text="${comment.nickname}"
+                                                      style="font-size: 15px;">작성자</span><br/>
+                                                <span th:text="${comment.content}"
+                                                      style="font-weight: bold;">댓글 내용</span><br/>
+                                                <small class="text-muted"
+                                                       th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
+                                            </div>
+                                            <button th:if="${memberId} == ${comment.memberId}" type="button"
+                                                    class="btn btn-sm btn-danger"
+                                                    th:onclick="deleteComment([[${comment.id}]])">삭제
+                                            </button>
+                                            <hr/>
+                                        </div>
+
+                                        <!-- 대댓글 보기 -->
+                                        <div class="media-body"
+                                             th:if="${comment.isDeleted == false} and ${comment.parentComId != 0}"
+                                             style="margin-left: 5%;">
+                                            <img src="/assets/img/star.png" class="mr-3 rounded-circle" alt="x"
+                                                 style="width: 10px; height: 10px;">
+                                            <span class="mt-0" th:text="${comment.nickname}" style="font-size: 15px;">작성자</span><br/>
+                                            <span th:text="${comment.content}"
+                                                  style="font-weight: bold;">댓글 내용</span><br/>
+                                            <small class="text-muted"
+                                                   th:text="${#temporals.format(comment.regDate, 'yy.MM.dd HH:mm')}">date</small>
+                                            <button th:if="${memberId} == ${comment.memberId}" type="button"
+                                                    class="btn btn-sm btn-danger"
+                                                    th:onclick="deleteComment([[${comment.id}]])">삭제
+                                            </button>
+                                            <hr/>
+                                        </div>
+
+                                        <!-- 대댓글 작성 양식 -->
+                                        <div th:id="'nested-comment-form-' + ${comment.id}" style="display: none;">
+                                            <form style="margin-left: 5%">
+                                                <div class="mb-3">
+                                                    <img src="/assets/img/star.png" class="rounded-circle" alt="x"
+                                                         style="width: 6px; height: 6px;">
+                                                    <span sec:authorize="isAuthenticated()"
+                                                          sec:authentication="principal.userVO.nickname"></span><br/>
+                                                    <textarea th:id="'reply-content-' + ${comment.id}"
+                                                              class="form-control"
+                                                              placeholder="답글을 입력하세요" rows="2"></textarea>
+                                                    <button type="button" class="btn btn-primary mt-2"
+                                                            th:onclick="addNestedComment([[${comment.id}]])">작성
+                                                    </button>
+                                                    <hr/>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
 
-                                    <!-- 추가 댓글은 위와 같은 형식으로 계속 추가 가능 -->
-
-                                    <!-- 댓글 쓰기 폼 -->
                                     <form>
                                         <div class="mb-3">
-                                            <img src="" class="rounded-circle" alt="User Avatar"
-                                                 style="width: 32px; height: 32px;">
-                                            <textarea class="form-control" placeholder="댓글을 입력하세요" rows="2"></textarea>
-                                            <button type="submit" class="btn btn-primary mt-2">작성</button>
+                                            <img src="/assets/img/favicon.png" class="rounded-circle" alt="x"
+                                                 style="width: 6px; height: 6px;">
+                                            <span sec:authorize="isAuthenticated()"
+                                                  sec:authentication="principal.userVO.nickname"></span><br/>
+                                            <textarea id="commentContent" class="form-control" placeholder="댓글을 입력하세요"
+                                                      rows="2"></textarea>
+                                            <button type="button" class="btn btn-primary mt-2" onclick="addComment()">
+                                                작성
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -181,6 +248,105 @@
                             }
                         } else {
                             console.log(request.response);
+                        }
+                    }
+                }
+            }
+
+            function addComment() {
+                if ('[[${memberId}]]' == 'notLoginUser') {
+                    alert('로그인해 주세요');
+                } else {
+                    const comment = document.querySelector('#commentContent');
+                    const data = {
+                        content: comment.value,
+                        memberId: [[${memberId}]],
+                        boardId: [[${detail.id}]]
+                    }
+                    if (comment.value != null && comment.value != '') {
+                        request.open('POST', 'http://localhost:8081/registComment', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                comment.value = '';
+                                window.location.reload();
+                            } else if (request.status == 400) {
+                                comment.value = '';
+                                alert('내용을 입력해 주세요');
+                            } else {
+                                alert('오류가 발생했습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    } else {
+                        alert('내용을 입력해 주세요');
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function inputNestedComment(id) {
+                const commentInput = document.querySelector('#nested-comment-form-' + id);
+                if (commentInput.style.display == 'block') {
+                    commentInput.style.display = 'none';
+                } else {
+                    commentInput.style.display = 'block';
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function addNestedComment(id) {
+                if ([[${memberId}]] == 'notLoginUser') {
+                    alert('로그인해 주세요');
+                } else {
+                    console.log([[${memberId}]]);
+                    const comment = document.querySelector('#reply-content-' + id);
+                    const data = {
+                        content: comment.value,
+                        memberId: [[${memberId}]],
+                        boardId: [[${detail.id}]],
+                        parentComId: id
+                    }
+                    if (comment.value != null && comment.value != '') {
+                        const request = new XMLHttpRequest();
+                        request.open('POST', 'http://localhost:8081/registComment', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                comment.value = '';
+                                window.location.reload();
+                            } else if (request.status == 400) {
+                                comment.value = '';
+                                alert('내용을 입력해 주세요');
+                            } else {
+                                alert('오류가 발생했습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    } else {
+                        alert('내용을 입력해 주세요');
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function deleteComment(id) {
+                const data = {
+                    id: id
+                }
+
+                if (confirm('댓글을 삭제하시겠습니까?')) {
+                    request.open('PATCH', 'http://localhost:8081/deleteComment', true);
+                    request.setRequestHeader('Content-type', 'application/json');
+                    request.send(JSON.stringify(data));
+                    request.onload = () => {
+                        if (request.status == 200) {
+                            window.location.reload();
+                        } else {
+                            alert('오류가 발생했습니다. 다시 시도해 주세요');
                         }
                     }
                 }
