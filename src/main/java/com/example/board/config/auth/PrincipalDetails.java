@@ -1,6 +1,6 @@
 package com.example.board.config.auth;
 
-import com.example.board.repository.UserVO;
+import com.example.board.repository.user.UserVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

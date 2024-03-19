@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.service.likes.LikesMapper">
+    <select id="getLikes" resultType="int">
+        select count(*) from likes
+        where board_id = #{boardId}
+    </select>
+
+    <select id="checkLikes" resultType="boolean">
+        select count(*) from likes
+        where member_id = #{memberId} and board_id = #{boardId}
+    </select>
+
+    <select id="findById" resultType="LikesResDto">
+        select * from likes where id = #{id}
+    </select>
+
+    <insert id="addLikes" parameterType="LikesReqDto">
+        insert into likes (member_id, board_id)
+        values (#{memberId}, #{boardId})
+
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteLikes" parameterType="LikesReqDto">
+        delete from likes
+        where member_id = #{memberId} and board_id = #{boardId}
+    </delete>
+</mapper>

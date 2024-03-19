@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{layouts/default-layout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <main id="main" class="main">
+
+            <div class="pagetitle">
+                <h1>INFO</h1>
+            </div><!-- End Page Title -->
+
+            <section class="section">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-sm-10" style="margin-top: 10px; margin-bottom: 10px;">
+                                    <input type="text" class="form-control" id="title" name="title"
+                                           placeholder="제목을 입력해 주세요." th:value="${detail.title}"/>
+                                </div>
+                                <!-- Quill Editor Full -->
+                                <div class="quill-editor-full" id="content">
+                                    <p th:utext="${detail.content}"></p>
+                                </div>
+                                <!-- End Quill Editor Full -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-success" onclick="modifyPost()">수정하기</button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelModify()">취소</button>
+                            <button type="button" class="btn btn-primary" onclick="location.href='/board'">전체글
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main><!-- End #main -->
+
+        <script>
+            function modifyPost() {
+                const title = document.querySelector('#title');
+                const content = document.querySelector('#content');
+                const data = {
+                    id: [[${detail.id}]],
+                    title: title.value,
+                    content: content.firstChild.innerHTML
+                }
+
+                if(confirm('글 내용을 수정하시겠습니까?')) {
+                    const request = new XMLHttpRequest();
+                    request.open('PATCH', 'http://localhost:8081/modifyPost', true);
+                    request.setRequestHeader('Content-type', 'application/json');
+                    request.send(JSON.stringify(data));
+                    request.onload = () => {
+                        if(request.status == 200) {
+                            if(request.response == 1) {
+                                alert('수정이 완료되었습니다');
+                                window.location.replace('http://localhost:8081/board/view/' + [[${detail.id}]]);
+                            } else {
+                                alert('작업 도중 오류가 발생했습니다. 다시 시도해 주세요');
+                            }
+                        } else {
+                            console.log(request.response);
+                        }
+                    }
+                }
+            }
+
+            function cancelModify() {
+                if(confirm('글 수정 작업을 취소하시겠습니까?')) {
+                    window.location.href='http://localhost:8081/board/view/' + [[${detail.id}]];
+                }
+            }
+        </script>
+    </th:block>
+</th:block>
+
+</html>

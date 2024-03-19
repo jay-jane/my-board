@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.service.board.BoardMapper">
+    <insert id="registPost" parameterType="BoardRegistReqDto">
+        insert into board (title, content, member_id)
+        values (#{title}, #{content}, #{memberId})
+    </insert>
+
+    <select id="getBoardDetail" resultType="BoardListResDto">
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.member_id, b.is_deleted,
+        u.id, u.nickname, count(l.id) as likes
+        from board b
+        left join user u on b.member_id = u.id
+        left join likes l on b.id = l.board_id
+        where b.id = #{boardId}
+    </select>
+
+    <select id="getBoardList" parameterType="RequestList" resultType="BoardListResDto">
+        select b.id, b.title, b.content, b.reg_date, b.mod_date, b.views, b.is_deleted,
+        u.id, u.nickname, count(l.id) as likes
+        from board b
+        left join user u on b.member_id = u.id
+        left join likes l on b.id = l.board_id
+        where b.is_deleted = false
+        <if test="data.keyword != null and data.keyword != ''">
+            <if test="data.category == 'title'">
+                and b.title like concat('%', #{data.keyword}, '%')
+            </if>
+            <if test="data.category == 'content'">
+                and b.content like concat('%', #{data.keyword}, '%')
+            </if>
+            <if test="data.category == 'nickname'">
+                and u.nickname like concat('%', #{data.keyword}, '%')
+            </if>
+        </if>
+        group by b.id
+        order by b.id desc
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <select id="getBoardListCount" parameterType="BoardCountReqDto" resultType="int">
+        select count(*)
+        from board b
+        left join user u on b.member_id = u.id
+        where b.is_deleted = false
+        <if test="keyword != null and keyword != ''">
+            <if test="category == 'title'">
+                and b.title like concat('%', #{keyword}, '%')
+            </if>
+            <if test="category == 'content'">
+                and b.content like concat('%', #{keyword}, '%')
+            </if>
+            <if test="category == 'nickname'">
+                and u.nickname like concat('%', #{keyword}, '%')
+            </if>
+        </if>
+    </select>
+
+    <update id="modifyPost" parameterType="BoardModiReqDto">
+        update board
+        set title = #{title}, content = #{content}, mod_date = now()
+        where id = #{id} and is_deleted = false
+    </update>
+
+    <update id="deletePost" parameterType="long">
+        update board
+        set is_deleted = true
+        where id = #{boardId}
+    </update>
+
+    <update id="getPostView" parameterType="long">
+        update board
+        set views = views + 1
+        where id = #{boardId}
+    </update>
+</mapper>

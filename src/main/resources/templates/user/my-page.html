@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{layouts/default-layout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <main id="main" class="main">
+
+            <div class="pagetitle">
+                <h1>내 정보</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/board">Home</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ol>
+                </nav>
+            </div><!-- End Page Title -->
+
+            <section class="section profile">
+                <div class="row">
+                    <div class="col-xl-4">
+
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                                <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                                <h2 th:text="${#authentication.principal.userVO.nickname} + ' 님'"></h2>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xl-8">
+
+                        <div class="card">
+                            <div class="card-body pt-3">
+                                <!-- Bordered Tabs -->
+                                <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                    <li class="nav-item">
+                                        <button class="nav-link active" data-bs-toggle="tab"
+                                                data-bs-target="#profile-edit">
+                                            회원 정보
+                                        </button>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <button class="nav-link" data-bs-toggle="tab"
+                                                data-bs-target="#profile-change-password">
+                                            비밀번호 변경
+                                        </button>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <button class="nav-link" data-bs-toggle="tab"
+                                                data-bs-target="#profile-settings">
+                                            <span style="color: red;">회원 탈퇴</span>
+                                        </button>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content pt-2">
+
+                                    <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
+
+                                        <!-- Profile Edit Form -->
+                                        <form>
+                                            <div class="row mb-3">
+                                                <label class="col-md-4 col-lg-3 col-form-label">ProfileImage</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <img src="assets/img/profile-img.jpg" alt="Profile">
+                                                    <div class="pt-2">
+                                                        <a href="#" class="btn btn-primary btn-sm"
+                                                           title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                                                        <a href="#" class="btn btn-danger btn-sm"
+                                                           title="Remove my profile image"><i
+                                                                class="bi bi-trash"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="fullName"
+                                                       class="col-md-4 col-lg-3 col-form-label">Name</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="fullName" type="text" class="form-control"
+                                                           id="fullName"
+                                                           th:value="${#authentication.principal.userVO.name}"
+                                                           style="box-shadow: none; border: 0; outline: none;"
+                                                           readonly/>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="nickname"
+                                                       class="col-md-4 col-lg-3 col-form-label">Nickname</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="nickname" type="text" class="form-control"
+                                                           id="nickname"
+                                                           th:value="${#authentication.principal.userVO.nickname}"
+                                                           th:onblur="checkNickname()"/>
+                                                    <div class="invalid-feedback" id="invalid-nickname"></div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="phone"
+                                                       class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="phone" type="text" class="form-control" id="phone"
+                                                           th:value="${#authentication.principal.userVO.phone}"/>
+                                                    <div class="invalid-feedback" id="invalid-phone"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="email"
+                                                       class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="email" type="text" class="form-control" id="email"
+                                                           th:value="${#authentication.principal.userVO.email}"
+                                                           style="box-shadow: none; border: 0; outline: none;"
+                                                           readonly/>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center">
+                                                <button type="button" class="btn btn-primary" th:onclick="modifyUser()">
+                                                    수정
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary">취소</button>
+                                            </div>
+                                        </form><!-- End Profile Edit Form -->
+
+                                    </div>
+
+                                    <div class="tab-pane fade pt-3" id="profile-change-password">
+
+                                        <!-- Change Password Form -->
+                                        <form>
+                                            <div class="row mb-3">
+                                                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">
+                                                    현재 비밀번호
+                                                </label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="currentPassword" type="password" class="form-control"
+                                                           id="currentPassword">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">
+                                                    새 비밀번호
+                                                </label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="newPassword" type="password" class="form-control"
+                                                           id="newPassword"/>
+                                                    <div class="invalid-feedback" id="invalid-password"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">
+                                                    비밀번호 확인
+                                                </label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="renewPassword" type="password" class="form-control"
+                                                           id="renewPassword" onkeyup="checkPw()"/>
+                                                    <div class="invalid-feedback" id="invalid-check-pw"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center">
+                                                <button type="button" class="btn btn-primary"
+                                                        th:onclick="modifyPassword()">비밀번호 변경
+                                                </button>
+                                            </div>
+                                        </form><!-- End Change Password Form -->
+
+                                    </div>
+
+                                    <div class="tab-pane fade pt-3" id="profile-settings">
+                                        <!-- Change Password Form -->
+                                        <form>
+
+                                            <div class="row mb-3">
+                                                <label for="dropPassword" class="col-md-4 col-lg-3 col-form-label">
+                                                    비밀번호
+                                                </label>
+                                                <div class="col-md-8 col-lg-9">
+                                                    <input name="dropPassword" type="password" class="form-control"
+                                                           id="dropPassword"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center">
+                                                <button type="button" class="btn btn-danger" th:onclick="deleteUser()">탈퇴하기</button>
+                                            </div>
+                                        </form><!-- End Change Password Form -->
+                                    </div>
+                                </div><!-- End Bordered Tabs -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main><!-- End #main -->
+
+        <script th:inline="javascript">
+            function checkNickname() {
+                const nickname = document.querySelector('#nickname');
+                const checkValid = /[ㄱ-ㅎ가-힣a-z0-9]/;
+                if (nickname.value != '' && nickname.value != [[${#authentication.principal.userVO.nickname}]]) {
+                    if (!checkValid.test(nickname.value)) {
+                        alert('닉네임은 특수문자를 제외한 2~13자로 설정해 주세요');
+                        nickname.value = '';
+                    } else if (nickname.value.length < 2 || nickname.value.length > 13) {
+                        alert('닉네임은 2~13자 사이로 설정해 주세요');
+                    } else {
+                        const request = new XMLHttpRequest();
+                        request.open('GET', 'http://localhost:8081/checkNickname?nickname=' + nickname.value, true);
+                        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        request.send();
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                if (JSON.parse(request.response)) {
+                                    alert('이미 존재하는 닉네임입니다. 다른 닉네임을 입력해 주세요');
+                                    nickname.style.borderColor = 'red';
+                                    nickname.value = '';
+                                } else {
+                                    nickname.style.borderColor = 'green';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function modifyUser() {
+                const data = {
+                    id: [[${#authentication.principal.userVO.id}]],
+                    nickname: nickname.value,
+                    phone: phone.value.replace(/-/g, '')
+                }
+                if (confirm('수정하시겠습니까?')) {
+                    if (nickname.value == '') {
+                        alert('닉네임을 입력해 주세요');
+                    } else if (phone.value == '') {
+                        alert('연락처를 입력해 주세요');
+                    } else {
+                        const request = new XMLHttpRequest();
+                        request.open('PATCH', 'http://localhost:8081/modifyUser', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                if (request.response == 1) {
+                                    alert('수정되었습니다. 다시 로그인해 주세요');
+                                    window.location.replace('http://localhost:8081/logout');
+                                } else {
+                                    alert('수정에 실패하였습니다. 다시 시도해 주세요');
+                                }
+                            } else if (request.status == 400) {
+                                const invalidTag = document.querySelectorAll('.invalid-feedback');
+                                const invalidNickname = document.querySelector('#invalid-nickname');
+                                const invalidPhone = document.querySelector('#invalid-phone');
+                                const errorResponse = JSON.parse(request.responseText);
+
+                                if (errorResponse.valid_nickname == null) {
+                                    errorResponse.valid_nickname = '';
+                                    invalidNickname.innerHTML = errorResponse.valid_nickname;
+                                } else {
+                                    invalidNickname.innerHTML = errorResponse.valid_nickname;
+                                }
+
+                                if (errorResponse.valid_phone == null) {
+                                    errorResponse.valid_phone = '';
+                                    invalidPhone.innerHTML = errorResponse.valid_phone;
+                                } else {
+                                    invalidPhone.innerHTML = errorResponse.valid_phone;
+                                }
+
+                                invalidTag.forEach(i => i.style.display = 'block');
+
+                                alert('양식에 맞지 않는 항목이 있습니다. 확인 후 다시 제출해 주세요');
+                            } else {
+                                alert('알 수 없는 오류로 실패하였습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            const currentPassword = document.querySelector('#currentPassword');
+            const newPassword = document.querySelector('#newPassword');
+            const renewPassword = document.querySelector('#renewPassword');
+
+            function modifyPassword() {
+
+                if (confirm('비밀번호를 변경하시겠습니까?')) {
+
+                    if (currentPassword.value != null && currentPassword.value != '') {
+                        const data = {
+                            id: [[${#authentication.principal.userVO.id}]],
+                            password: currentPassword.value
+                        }
+
+                        const request = new XMLHttpRequest();
+                        request.open('POST', 'http://localhost:8081/checkPassword', true);
+                        request.setRequestHeader('Content-type', 'application/json');
+                        request.send(JSON.stringify(data));
+                        request.onload = () => {
+                            if (request.status == 200) {
+                                if (request.response == 'true') {
+                                    if (newPassword.value == renewPassword.value && newPassword.value != '' && newPassword.value != null) {
+                                        const newPwData = {
+                                            id: [[${#authentication.principal.userVO.id}]],
+                                            password: currentPassword.value,
+                                            newPassword: newPassword.value
+                                        }
+                                        request.open('PATCH', 'http://localhost:8081/modifyPassword', true);
+                                        request.setRequestHeader('Content-type', 'application/json');
+                                        request.send(JSON.stringify(newPwData));
+                                        request.onload = () => {
+                                            if (request.status == 200) {
+                                                alert('비밀번호 변경이 완료되었습니다. 다시 로그인해 주세요!');
+                                                window.location.replace('http://localhost:8081/logout');
+                                            } else if (request.status == 400) {
+                                                console.log(request.response);
+                                                const invalidTag = document.querySelectorAll('.invalid-feedback');
+                                                const invalidPassword = document.querySelector('#invalid-password');
+                                                const errorResponse = JSON.parse(request.responseText);
+
+                                                if (errorResponse.valid_newPassword == null) {
+                                                    errorResponse.valid_newPassword = '';
+                                                    invalidPassword.innerHTML = errorResponse.valid_newPassword;
+                                                } else {
+                                                    invalidPassword.innerHTML = errorResponse.valid_newPassword;
+                                                }
+                                                invalidTag.forEach(i => i.style.display = 'block');
+                                                alert('양식에 맞지 않는 항목이 있습니다. 다시 확인해 주세요');
+                                            } else {
+                                                alert('작업 도중 오류가 발생했습니다. 다시 시도해 주세요');
+                                            }
+                                        }
+                                    } else {
+                                        alert('변경하려는 비밀번호가 일치하지 않습니다. 다시 확인해 주세요');
+                                    }
+                                } else {
+                                    alert('현재 비밀번호가 틀립니다. 다시 확인해 주세요');
+                                }
+                            } else {
+                                alert('작업 도중 오류가 발생했습니다. 다시 시도해 주세요');
+                            }
+                        }
+                    } else {
+                        alert('현재 비밀번호를 입력해 주세요');
+                    }
+                }
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function deleteUser() {
+                const dropPassword = document.querySelector('#dropPassword');
+                const data = {
+                    id: [[${#authentication.principal.userVO.id}]],
+                    password: dropPassword.value
+                }
+
+                if(confirm('탈퇴하시면 게시글, 댓글을 제외한 모든 회원 정보가 삭제됩니다.\n정말 탈퇴하시겠습니까?')) {
+                    const request = new XMLHttpRequest();
+                    request.open('DELETE', 'http://localhost:8081/deleteUser', true);
+                    request.setRequestHeader('Content-type', 'application/json');
+                    request.send(JSON.stringify(data));
+                    request.onload = () => {
+                        if (request.status == 200) {
+                            if(request.response == 1) {
+                                alert('회원 탈퇴가 완료되었습니다');
+                                window.location.replace('http://localhost:8081/logout');
+                            } else {
+                                alert('비밀번호가 틀립니다. 다시 확인해 주세요');
+                            }
+                        } else {
+                            console.log(request.response);
+                        }
+                    }
+                }
+
+            }
+        </script>
+
+        <script>
+            function checkPw() {
+
+            const newPassword = document.querySelector('#newPassword');
+            const renewPassword = document.querySelector('#renewPassword');
+            const invalidPassword = document.querySelector('#invalid-password');
+            const checkPwValid = document.querySelector('#invalid-check-pw');
+            if (newPassword.value == renewPassword.value) {
+                newPassword.style.borderColor = 'green';
+                renewPassword.style.borderColor = 'green';
+                checkPwValid.style.display = 'none';
+                invalidPassword.innerHTML = '';
+                checkPwValid.innerHTML = '';
+            } else {
+                newPassword.style.borderColor = 'red';
+                renewPassword.style.borderColor = 'red';
+                checkPwValid.style.display = 'block';
+                checkPwValid.innerHTML = '비밀번호가 일치하지 않습니다';
+            }
+        }
+        </script>
+    </th:block>
+</th:block>
+
+</html>
