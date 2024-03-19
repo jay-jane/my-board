@@ -53,7 +53,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String provider = oAuth2UserInfo.getProvider(); //google or kakao
         String providerId = oAuth2UserInfo.getProviderId();
         String loginId = provider + "_" + providerId; //google_########### or kakao_###########
-        String password = bCryptPasswordEncoder.encode("의미없는");
+        String password = bCryptPasswordEncoder.encode("xpasswordx");
         String name = oAuth2UserInfo.getName();
         String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_MEMBER";

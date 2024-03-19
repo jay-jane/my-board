@@ -26,8 +26,8 @@ import java.util.Arrays;
 @Configuration //클래스를 구성 클래스로 표시
 @EnableWebSecurity //스프링 시큐리티 필터가 스프링 필터체인에 등록됨
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@RequiredArgsConstructor
 //secured, preAuthorize, postAuthorize 어노테이션 활성화
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
